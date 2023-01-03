@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../pages/Home.vue";
-import About from "../pages/About.vue";
+import Tree from "../pages/Tree.vue";
+import CyberGallery from "../pages/CyberGallery.vue";
+import GetImgColor from "../pages/GetImgColor.vue";
 
 const routes = [
   {
@@ -9,9 +11,19 @@ const routes = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "about",
-    component: About,
+    path: "/tree",
+    name: "tree",
+    component: Tree,
+  },
+  {
+    path: "/cybergallery",
+    name: "cybergallery",
+    component: CyberGallery,
+  },
+  {
+    path: "/imgcolor",
+    name: "imgcolor",
+    component: GetImgColor,
   },
 ];
 
