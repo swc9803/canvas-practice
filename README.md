@@ -1,7 +1,6 @@
-# vue3-template
+# canvas-practice
 
-### installed packages
+### included works
 ```
-eslint, sass, sass-loader
-
+three, observeImgColor, cyberGallery
 ```

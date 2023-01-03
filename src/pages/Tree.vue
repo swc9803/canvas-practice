@@ -15,7 +15,6 @@ class Tree {
     this.W = 800;
     this.H = 800;
     this.branches = [];
-    this.darkTheme = false;
     this.debug = false;
     this.decaying = false;
     this.floorY = 685;
@@ -75,16 +74,12 @@ class Tree {
       y2: 560,
     };
   }
-  detectTheme(mq) {
-    this.darkTheme = mq.matches;
-  }
   draw() {
     const { c, W, H, debug, branches, fruit } = this;
 
     c.clearRect(0, 0, W, H);
 
-    const lightness = this.darkTheme ? 90 : 10;
-    const foreground = `hsl(223,10%,${lightness}%)`;
+    const foreground = `hsl(223,10%,90%)`;
     c.fillStyle = foreground;
     c.strokeStyle = foreground;
 
@@ -243,7 +238,6 @@ class Tree {
   }
   init() {
     this.setupCanvas();
-    this.setupThemeDetection();
     this.run();
   }
   run() {
@@ -262,19 +256,12 @@ class Tree {
     C.height = H * S;
     C.style.width = "auto";
     C.style.height = "100%";
-    c.scale(S, S);
+    // c.scale(S, S);
 
     // set unchanging styles
     c.font = "16px sans-serif";
     c.lineCap = "round";
     c.lineJoin = "round";
-  }
-  setupThemeDetection() {
-    if (window.matchMedia) {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      this.detectTheme(mq);
-      mq.addListener(this.detectTheme.bind(this));
-    }
   }
 }
 

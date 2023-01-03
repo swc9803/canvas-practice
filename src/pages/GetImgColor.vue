@@ -1,92 +1,58 @@
 <template>
-  <div class="container">
+  <div class="container" ref="containerRef">
     <div class="colors">
       <ul>
-        <li class="bg">background</li>
-        <li class="pr">primary</li>
-        <li class="se">secondary</li>
+        <li ref="backgroundRef">background</li>
+        <li ref="primaryRef">primary</li>
+        <li ref="secondaryRef">secondary</li>
       </ul>
     </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1554118879-e459bb1fe1ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTgwOQ&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1552010099-5dc86fcfaa38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTgwOQ&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1587735243475-46f39636076a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzMwNDg0MA&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTg1NQ&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1559181567-c3190ca9959b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTg5Mw&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1599076480086-fd46f116eb8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTkyMQ&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://images.unsplash.com/photo-1574709755254-fcd942d09d5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI2MDAwNw&ixlib=rb-1.2.1&q=80&w=400"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
-    </div>
-    <div class="frame">
-      <p>
-        <img
-          src="https://i.imgur.com/x8Lhx01.jpg"
-          alt="image"
-          class="targetImage"
-        />
-      </p>
+    <div v-for="image in images" :key="image.id" class="frame">
+      <img :src="image.src" alt="image" :ref="imageRef" class="targetImage" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
+
+const containerRef = ref();
+const backgroundRef = ref();
+const primaryRef = ref();
+const secondaryRef = ref();
+
+const imageArray = ref([]);
+const imageRef = (el) => imageArray.value.push(el);
+const images = [
+  {
+    src: "https://images.unsplash.com/photo-1554118879-e459bb1fe1ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTgwOQ&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1552010099-5dc86fcfaa38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTgwOQ&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1587735243475-46f39636076a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzMwNDg0MA&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTg1NQ&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTg5Mw&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1599076480086-fd46f116eb8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI1OTkyMQ&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1574709755254-fcd942d09d5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NzI2MDAwNw&ixlib=rb-1.2.1&q=80&w=400",
+  },
+  {
+    src: "https://i.imgur.com/x8Lhx01.jpg",
+  },
+];
+
 class Observe {
-  constructor(className) {
-    this.target = document.getElementsByClassName(className);
+  constructor() {
+    this.target = imageArray.value;
     this.targetArr = Array.from(this.target);
     this.options = {
       root: null,
@@ -109,29 +75,19 @@ class Observe {
     for (let i = 0; i < targets.length; i++) {
       if (targets[i].isIntersecting) {
         const target = targets[i].target;
-        const frame = target.parentNode.parentNode;
-        const bg = document.getElementsByClassName("bg")[0];
-        const pr = document.getElementsByClassName("pr")[0];
-        const se = document.getElementsByClassName("se")[0];
         const getColorPalette = new GetColorPalette(5, 10);
 
-        getColorPalette
-          .initialize(target.src)
-          .then((palette) => {
-            const bgCol = palette.backgroundColor;
-            const prCol = palette.primaryColor;
-            const seCol = palette.secondaryColor;
+        getColorPalette.initialize(target.src).then((palette) => {
+          const bgCol = palette.backgroundColor;
+          const prCol = palette.primaryColor;
+          const seCol = palette.secondaryColor;
 
-            frame.style.transition = "background 0.8s ease-in-out";
-            frame.style.background = `rgb(${prCol[0]}, ${prCol[1]}, ${prCol[2]})`;
+          containerRef.value.style.background = `rgb(${prCol[0]}, ${prCol[1]}, ${prCol[2]})`;
 
-            bg.style.background = `rgb(${bgCol[0]}, ${bgCol[1]}, ${bgCol[2]})`;
-            pr.style.background = `rgb(${prCol[0]}, ${prCol[1]}, ${prCol[2]})`;
-            se.style.background = `rgb(${seCol[0]}, ${seCol[1]}, ${seCol[2]})`;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+          backgroundRef.value.style.background = `rgb(${bgCol[0]}, ${bgCol[1]}, ${bgCol[2]})`;
+          primaryRef.value.style.background = `rgb(${prCol[0]}, ${prCol[1]}, ${prCol[2]})`;
+          secondaryRef.value.style.background = `rgb(${seCol[0]}, ${seCol[1]}, ${seCol[2]})`;
+        });
       }
     }
   }
@@ -175,7 +131,6 @@ class GetColorPalette {
 
   getPalette() {
     const colors = [];
-    const count = {};
 
     for (let i = 0; i < this.data.length; i += 4 * this.beta) {
       const r = this.data[i + 0];
@@ -192,33 +147,32 @@ class GetColorPalette {
           const nb = b - colors[j][2];
           const dist = Math.sqrt(nr * nr + ng * ng + nb * nb);
 
-          if (dist < this.delta) {
-            continue;
-          } else {
+          if (this.delta < dist) {
             colors.push(rgb);
-
             break;
           }
         }
       }
     }
 
-    // Reference
-    // https://qiita.com/saka212/items/408bb17dddefc09004c8
-    // The great code! Thank you so much.
+    // 중복 색상 검사
+    const count = {};
     for (let i = 0; i < colors.length; i++) {
       const color = colors[i];
-
       count[color] = (count[color] || 0) + 1;
     }
+    /*
+        forEach 보다 빠른 for문 사용
+        colors.forEach((i) => {
+        count[i] = (count[i] || 0) + 1;
+        }); 
+    */
 
     // object to array
     const arrCount = Object.entries(count);
 
     arrCount.sort((a, b) => b[1] - a[1]);
-
     const tmp = {};
-
     tmp.backgroundColor = arrCount[0][0].split(",");
     tmp.primaryColor =
       arrCount[Math.floor(arrCount.length * 0.66)][0].split(",");
@@ -229,50 +183,45 @@ class GetColorPalette {
   }
 }
 onMounted(() => {
-  new Observe("targetImage");
+  new Observe();
 });
 </script>
 
 <style lang="scss" scoped>
-body {
-  font-family: Roboto, sans-serif;
-  font-size: 62.5%;
-}
-
 .container {
+  height: 100vh;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
-  height: 100vh;
-}
-
-.targetImage {
-  width: 80%;
-  margin: 0 10%;
-  box-shadow: 5px 5px 10px #000;
-  user-select: none;
-}
-
-.frame {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  scroll-snap-align: start;
-}
-
-.colors {
-  position: fixed;
-  z-index: 9999;
-  top: 16px;
-  left: 16px;
-  background: rgba(255, 255, 255, 0.6);
-  padding: 16px;
-  box-shadow: 5px 5px 10px #000;
-}
-
-li {
-  padding: 8px;
-  margin: 4px;
-  transition: background 0.4s ease-in-out;
+  transition: background 0.5s ease-in-out;
+  .colors {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 16px;
+    box-shadow: 5px 5px 10px #000;
+    z-index: 1;
+    pointer-events: none;
+    ul {
+      li {
+        padding: 8px;
+        margin: 4px;
+        transition: background 0.4s ease-in-out;
+        pointer-events: auto;
+      }
+    }
+  }
+  .frame {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    .targetImage {
+      width: 40%;
+      box-shadow: 5px 5px 10px #000;
+      user-select: none;
+    }
+  }
 }
 </style>
