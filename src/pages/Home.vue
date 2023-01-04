@@ -18,6 +18,9 @@ const routes = [
   {
     name: "imgcolor",
   },
+  {
+    name: "input",
+  },
 ];
 </script>
 

@@ -11,6 +11,7 @@
       <img :src="image.src" alt="image" :ref="imageRef" class="targetImage" />
     </div>
   </div>
+  <p>blank</p>
 </template>
 
 <script setup>
@@ -189,10 +190,16 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
+  //   width: 80%;
   height: 100vh;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   transition: background 0.5s ease-in-out;
+  -ms-overflow-style: none;
+  overscroll-behavior: contain;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .colors {
     position: fixed;
     top: 16px;
