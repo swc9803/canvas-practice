@@ -11,7 +11,6 @@
       <img :src="image.src" alt="image" :ref="imageRef" class="targetImage" />
     </div>
   </div>
-  <p>blank</p>
 </template>
 
 <script setup>
@@ -53,8 +52,7 @@ const images = [
 
 class Observe {
   constructor() {
-    this.target = imageArray.value;
-    this.targetArr = Array.from(this.target);
+    this.targetArr = Array.from(imageArray.value);
     this.options = {
       root: null,
       rootMargin: "0px",
@@ -66,7 +64,6 @@ class Observe {
 
   initialize() {
     const observer = new IntersectionObserver(this.changeColor, this.options);
-
     for (let i = 0; i < this.targetArr.length; i++) {
       observer.observe(this.targetArr[i]);
     }
@@ -190,16 +187,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
-  //   width: 80%;
   height: 100vh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
   transition: background 0.5s ease-in-out;
-  -ms-overflow-style: none;
-  overscroll-behavior: contain;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
   .colors {
     position: fixed;
     top: 16px;
@@ -207,19 +198,21 @@ onMounted(() => {
     background: rgba(255, 255, 255, 0.6);
     padding: 16px;
     box-shadow: 5px 5px 10px #000;
-    z-index: 1;
     pointer-events: none;
     ul {
+      padding: 0;
+      margin: 0;
+      border: 1px solid black;
       li {
         padding: 8px;
-        margin: 4px;
         transition: background 0.4s ease-in-out;
         pointer-events: auto;
+        list-style: none;
       }
     }
   }
   .frame {
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -227,7 +220,6 @@ onMounted(() => {
     .targetImage {
       width: 40%;
       box-shadow: 5px 5px 10px #000;
-      user-select: none;
     }
   }
 }

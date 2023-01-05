@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../pages/Home.vue";
+import Home from "../pages/_Home.vue";
 import Tree from "../pages/Tree.vue";
 import CyberGallery from "../pages/CyberGallery.vue";
 import GetImgColor from "../pages/GetImgColor.vue";
 import Input from "../pages/Input.vue";
+import WaveEffect from "../pages/WaveEffect.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/input",
     name: "input",
     component: Input,
+  },
+  {
+    path: "/wave",
+    name: "wave",
+    component: WaveEffect,
   },
 ];
 

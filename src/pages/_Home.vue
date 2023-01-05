@@ -21,6 +21,9 @@ const routes = [
   {
     name: "input",
   },
+  {
+    name: "wave",
+  },
 ];
 </script>
 
