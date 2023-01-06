@@ -5,6 +5,7 @@ import CyberGallery from "../pages/CyberGallery.vue";
 import GetImgColor from "../pages/GetImgColor.vue";
 import Input from "../pages/Input.vue";
 import WaveEffect from "../pages/WaveEffect.vue";
+import Pinning from "../pages/Pinning.vue";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: "/wave",
     name: "wave",
     component: WaveEffect,
+  },
+  {
+    path: "/pinning",
+    name: "pinning",
+    component: Pinning,
   },
 ];
 
