@@ -5,7 +5,9 @@ import CyberGallery from "../pages/CyberGallery.vue";
 import GetImgColor from "../pages/GetImgColor.vue";
 import Input from "../pages/Input.vue";
 import WaveEffect from "../pages/WaveEffect.vue";
+import RainDrawImg from "../pages/RainDrawImg.vue";
 import Pinning from "../pages/Pinning.vue";
+import CanvasParticleText from "../pages/CanvasParticleText.vue";
 
 const routes = [
   {
@@ -42,6 +44,16 @@ const routes = [
     path: "/pinning",
     name: "pinning",
     component: Pinning,
+  },
+  {
+    path: "/raindraw",
+    name: "raindraw",
+    component: RainDrawImg,
+  },
+  {
+    path: "/particletext",
+    name: "particletext",
+    component: CanvasParticleText,
   },
 ];
 

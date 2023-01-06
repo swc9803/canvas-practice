@@ -28,7 +28,7 @@
         />
       </div>
     </section>
-    <div>background img</div>
+    <div class="background" />
     <section class="section3">
       <p>곰표</p>
     </section>
@@ -56,9 +56,11 @@ const titles = [
   { title: "title", description: "description" },
 ];
 const imgs = [
-  { src: require("../assets/test.jpg") },
-  { src: require("../assets/test.jpg") },
-  { src: require("../assets/test.jpg") },
+  { src: require("../assets/gom.png") },
+  { src: require("../assets/gom.png") },
+  { src: require("../assets/gom.png") },
+  { src: require("../assets/gom.png") },
+  { src: require("../assets/gom.png") },
 ];
 
 onMounted(() => {
@@ -74,19 +76,77 @@ onMounted(() => {
     transformOrigin: "left",
     scaleX: 0,
   });
-  //   const slideImgTl = gsap.timeline();
-  //   ScrollTrigger.create({
-  //     animation: slideImgTl,
-  //     trigger: titlesArray.value[0],
-  //     start: "top 20%",
-  //     end: "+=500",
-  //     scrub: 1,
-  //     pin: true,
-  //     markers: true,
-  //   });
-  //   slideImgTl.to(slideImgArray.value[0], {
-  //     opacity: 1,
-  //   });
+
+  gsap.set(slideImgArray.value[0], {
+    x: "-700px",
+  });
+  gsap.set(slideImgArray.value[1], {
+    x: "-700px",
+  });
+  gsap.set(slideImgArray.value[2], {
+    x: "-700px",
+  });
+  gsap.set(slideImgArray.value[3], {
+    x: "-700px",
+  });
+  gsap.set(slideImgArray.value[4], {
+    x: "-700px",
+  });
+  const slideImgTl1 = gsap.timeline();
+  ScrollTrigger.create({
+    animation: slideImgTl1,
+    trigger: titlesArray.value[0],
+    start: "top 40%",
+    end: "+=300",
+    scrub: 1,
+  });
+  slideImgTl1.to(slideImgArray.value[0], {
+    x: "700px",
+  });
+  const slideImgTl2 = gsap.timeline();
+  ScrollTrigger.create({
+    animation: slideImgTl2,
+    trigger: titlesArray.value[1],
+    start: "top 40%",
+    end: "+=300",
+    scrub: 1,
+  });
+  slideImgTl2.to(slideImgArray.value[1], {
+    x: "700px",
+  });
+  const slideImgTl3 = gsap.timeline();
+  ScrollTrigger.create({
+    animation: slideImgTl3,
+    trigger: titlesArray.value[2],
+    start: "top 40%",
+    end: "+=300",
+    scrub: 1,
+  });
+  slideImgTl3.to(slideImgArray.value[2], {
+    x: "700px",
+  });
+  const slideImgTl4 = gsap.timeline();
+  ScrollTrigger.create({
+    animation: slideImgTl4,
+    trigger: titlesArray.value[3],
+    start: "top 40%",
+    end: "+=300",
+    scrub: 1,
+  });
+  slideImgTl4.to(slideImgArray.value[3], {
+    x: "700px",
+  });
+  const slideImgTl5 = gsap.timeline();
+  ScrollTrigger.create({
+    animation: slideImgTl5,
+    trigger: titlesArray.value[4],
+    start: "top 40%",
+    end: "+=300",
+    scrub: 1,
+  });
+  slideImgTl5.to(slideImgArray.value[4], {
+    x: "700px",
+  });
 });
 </script>
 
@@ -148,12 +208,27 @@ onMounted(() => {
       height: calc(var(--vh, 1vh) * 100);
       background: white;
       color: black;
+      overflow: hidden;
       .slideImg {
-        // position: absolute;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 60%;
-        opacity: 0;
+        border: 1px solid black;
+        box-sizing: border-box;
       }
     }
+  }
+  .background {
+    width: 100%;
+    height: 60%;
+    border: 20px solid black;
+    box-sizing: border-box;
+    background-image: url("~@/assets/gom.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
   }
   .section3 {
     width: 100%;
