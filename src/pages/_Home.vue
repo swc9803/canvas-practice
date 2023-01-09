@@ -19,6 +19,7 @@ const routes = [
   { name: "pinning" },
   { name: "raindraw" },
   { name: "particletext" },
+  //   { name: "slime" },
 ];
 </script>
 
