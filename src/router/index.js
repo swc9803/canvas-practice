@@ -8,7 +8,7 @@ import WaveEffect from "../pages/WaveEffect.vue";
 import RainDrawImg from "../pages/RainDrawImg.vue";
 import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
-// import CanvasSlime from "../pages/CanvasSlime.vue";
+import CanvasSlime from "../pages/CanvasSlime.vue";
 
 const routes = [
   {
@@ -56,11 +56,11 @@ const routes = [
     name: "particletext",
     component: CanvasParticleText,
   },
-  //   {
-  //     path: "/slime",
-  //     name: "slime",
-  //     component: CanvasSlime,
-  //   },
+  {
+    path: "/slime",
+    name: "slime",
+    component: CanvasSlime,
+  },
 ];
 
 const router = createRouter({
