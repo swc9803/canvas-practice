@@ -20,6 +20,7 @@ const routes = [
   { name: "raindraw" },
   { name: "particletext" },
   { name: "slime" },
+  { name: "scrollskew" },
 ];
 </script>
 

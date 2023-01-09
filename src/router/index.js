@@ -9,6 +9,7 @@ import RainDrawImg from "../pages/RainDrawImg.vue";
 import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
 import CanvasSlime from "../pages/CanvasSlime.vue";
+import ScrollSkew from "../pages/ScrollSkew.vue";
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: "/slime",
     name: "slime",
     component: CanvasSlime,
+  },
+  {
+    path: "/scrollskew",
+    name: "scrollskew",
+    component: ScrollSkew,
   },
 ];
 

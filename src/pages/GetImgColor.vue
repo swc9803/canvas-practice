@@ -109,7 +109,7 @@ class GetColorPalette {
       this.img.src = src;
       this.img.crossOrigin = "anonymous";
 
-      this.img.addEventListener("load", () => {
+      this.img.onload = () => {
         this.canvas.width = this.img.width;
         this.canvas.height = this.img.height;
         this.ctx.drawImage(this.img, 0, 0);
@@ -123,7 +123,7 @@ class GetColorPalette {
         this.palette = this.getPalette();
 
         resolve(this.palette);
-      });
+      };
     });
   }
 
