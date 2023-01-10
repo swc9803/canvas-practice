@@ -21,6 +21,8 @@ const routes = [
   { name: "particletext" },
   { name: "slime" },
   { name: "scrollskew" },
+  { name: "glitch" },
+  { name: "svgwave" },
 ];
 </script>
 

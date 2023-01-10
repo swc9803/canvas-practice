@@ -98,7 +98,7 @@ class Effect {
     this.context.textBaseline = "middle";
     this.context.lineWidth = 3;
     this.context.strokeStyle = "white";
-    this.context.font = `${this.fontSize}px Arial`;
+    this.context.font = `bold ${this.fontSize}px Arial`;
 
     let linesArray = [];
     let words = text.split(" ");
@@ -154,10 +154,10 @@ class Effect {
     }
   }
   render() {
-    this.particles.forEach((particle) => {
-      particle.update();
-      particle.draw();
-    });
+    for (let i = 0; i < this.particles.length; i++) {
+      this.particles[i].update();
+      this.particles[i].draw();
+    }
   }
   resize(width, height) {
     this.canvasWidth = width;

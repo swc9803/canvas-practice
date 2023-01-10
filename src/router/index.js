@@ -10,6 +10,8 @@ import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
 import CanvasSlime from "../pages/CanvasSlime.vue";
 import ScrollSkew from "../pages/ScrollSkew.vue";
+import Glitch from "../pages/Glitch.vue";
+import SvgWave from "../pages/SvgWave.vue";
 
 const routes = [
   {
@@ -66,6 +68,16 @@ const routes = [
     path: "/scrollskew",
     name: "scrollskew",
     component: ScrollSkew,
+  },
+  {
+    path: "/glitch",
+    name: "glitch",
+    component: Glitch,
+  },
+  {
+    path: "/svgwave",
+    name: "svgwave",
+    component: SvgWave,
   },
 ];
 
