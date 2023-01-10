@@ -12,10 +12,8 @@
 <script setup>
 const routes = [
   { name: "tree" },
-  { name: "cybergallery" },
   { name: "imgcolor" },
   { name: "input" },
-  { name: "wave" },
   { name: "pinning" },
   { name: "raindraw" },
   { name: "particletext" },
@@ -23,6 +21,7 @@ const routes = [
   { name: "scrollskew" },
   { name: "glitch" },
   { name: "svgwave" },
+  { name: "movingstar" },
 ];
 </script>
 

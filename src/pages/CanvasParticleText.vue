@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvasRef" @mousemove="movePointer" />
+  <canvas ref="canvasRef" @mousemove="onMouseMove" @touchmove="onTouchMove" />
   <input type="text" ref="inputRef" :value="msgData" @input="msgTyping" />
 </template>
 
@@ -19,9 +19,15 @@ const mouse = reactive({
   x: 0,
   y: 0,
 });
-const movePointer = (e) => {
+
+const onMouseMove = (e) => {
   mouse.x = e.x;
   mouse.y = e.y;
+};
+const onTouchMove = (e) => {
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+  e.preventDefault();
 };
 
 class Particle {

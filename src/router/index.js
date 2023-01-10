@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../pages/_Home.vue";
 import Tree from "../pages/Tree.vue";
-import CyberGallery from "../pages/CyberGallery.vue";
 import GetImgColor from "../pages/GetImgColor.vue";
 import Input from "../pages/Input.vue";
-import WaveEffect from "../pages/WaveEffect.vue";
 import RainDrawImg from "../pages/RainDrawImg.vue";
 import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
@@ -12,6 +10,7 @@ import CanvasSlime from "../pages/CanvasSlime.vue";
 import ScrollSkew from "../pages/ScrollSkew.vue";
 import Glitch from "../pages/Glitch.vue";
 import SvgWave from "../pages/SvgWave.vue";
+import MovingStar from "../pages/MovingStar.vue";
 
 const routes = [
   {
@@ -25,11 +24,6 @@ const routes = [
     component: Tree,
   },
   {
-    path: "/cybergallery",
-    name: "cybergallery",
-    component: CyberGallery,
-  },
-  {
     path: "/imgcolor",
     name: "imgcolor",
     component: GetImgColor,
@@ -38,11 +32,6 @@ const routes = [
     path: "/input",
     name: "input",
     component: Input,
-  },
-  {
-    path: "/wave",
-    name: "wave",
-    component: WaveEffect,
   },
   {
     path: "/pinning",
@@ -78,6 +67,11 @@ const routes = [
     path: "/svgwave",
     name: "svgwave",
     component: SvgWave,
+  },
+  {
+    path: "/movingstar",
+    name: "movingstar",
+    component: MovingStar,
   },
 ];
 
