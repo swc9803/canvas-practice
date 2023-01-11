@@ -22,6 +22,7 @@ const routes = [
   { name: "glitch" },
   { name: "svgwave" },
   { name: "movingstar" },
+  { name: "collision" },
 ];
 </script>
 

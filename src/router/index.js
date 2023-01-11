@@ -11,6 +11,7 @@ import ScrollSkew from "../pages/ScrollSkew.vue";
 import Glitch from "../pages/Glitch.vue";
 import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
+import Collision from "../pages/Collision.vue";
 
 const routes = [
   {
@@ -72,6 +73,11 @@ const routes = [
     path: "/movingstar",
     name: "movingstar",
     component: MovingStar,
+  },
+  {
+    path: "/collision",
+    name: "collision",
+    component: Collision,
   },
 ];
 

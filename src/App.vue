@@ -20,9 +20,13 @@ onMounted(() => {
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 
-p,
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   overflow-x: hidden;
 }
 </style>
