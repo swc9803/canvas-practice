@@ -23,6 +23,7 @@ const routes = [
   { name: "svgwave" },
   { name: "movingstar" },
   { name: "collision" },
+  { name: "dragimg" },
 ];
 </script>
 

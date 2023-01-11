@@ -12,6 +12,7 @@ import Glitch from "../pages/Glitch.vue";
 import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
 import Collision from "../pages/Collision.vue";
+import DragImg from "../pages/DragImg.vue";
 
 const routes = [
   {
@@ -78,6 +79,11 @@ const routes = [
     path: "/collision",
     name: "collision",
     component: Collision,
+  },
+  {
+    path: "/dragimg",
+    name: "dragimg",
+    component: DragImg,
   },
 ];
 
