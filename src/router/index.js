@@ -15,6 +15,7 @@ import Collision from "../pages/Collision.vue";
 import DragRotation from "../pages/DragRotation.vue";
 import FocusImg from "../pages/FocusImg.vue";
 import SpotLight from "../pages/SpotLight.vue";
+import ComparisonImg from "../pages/ComparisonImg.vue";
 
 const routes = [
   {
@@ -96,6 +97,11 @@ const routes = [
     path: "/spotlight",
     name: "spotlight",
     component: SpotLight,
+  },
+  {
+    path: "/comparison",
+    name: "comparison",
+    component: ComparisonImg,
   },
 ];
 

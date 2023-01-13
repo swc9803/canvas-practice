@@ -28,13 +28,9 @@ const imgRef = ref();
 onMounted(() => {
   Draggable.create("#knob", {
     type: "rotation",
-    onDrag: function (e) {
-      if (rotationValue.value > 0) {
-        rotationValue.value = 100 - this.rotation / 10;
-        console.log(e);
-      } else {
-        rotationValue.value = 0;
-      }
+    bounds: { minRotation: 0, maxRotation: 1000 },
+    onDrag: function () {
+      rotationValue.value = 100 - this.rotation / 10;
       imgRef.value.style.transform = `translate(0, ${rotationValue.value}%)`;
     },
   });
