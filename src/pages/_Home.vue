@@ -23,7 +23,9 @@ const routes = [
   { name: "svgwave" },
   { name: "movingstar" },
   { name: "collision" },
-  { name: "dragimg" },
+  { name: "dragrotation" },
+  { name: "focusimg" },
+  { name: "spotlight" },
 ];
 </script>
 

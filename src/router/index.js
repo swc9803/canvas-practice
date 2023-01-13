@@ -12,7 +12,9 @@ import Glitch from "../pages/Glitch.vue";
 import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
 import Collision from "../pages/Collision.vue";
-import DragImg from "../pages/DragImg.vue";
+import DragRotation from "../pages/DragRotation.vue";
+import FocusImg from "../pages/FocusImg.vue";
+import SpotLight from "../pages/SpotLight.vue";
 
 const routes = [
   {
@@ -81,9 +83,19 @@ const routes = [
     component: Collision,
   },
   {
-    path: "/dragimg",
-    name: "dragimg",
-    component: DragImg,
+    path: "/dragrotation",
+    name: "dragrotation",
+    component: DragRotation,
+  },
+  {
+    path: "/focusimg",
+    name: "focusimg",
+    component: FocusImg,
+  },
+  {
+    path: "/spotlight",
+    name: "spotlight",
+    component: SpotLight,
   },
 ];
 
