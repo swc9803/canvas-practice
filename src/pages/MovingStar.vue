@@ -19,16 +19,16 @@ const mouse = reactive({
 });
 
 const onMouseMove = (e) => {
-  mouse.x = e.x;
-  mouse.y = e.y;
+  mouse.x = e.pageX;
+  mouse.y = e.pageY;
   for (let i = 0; i < 4; i++) {
     particleArray.push(new Particle());
   }
 };
 const onTouchMove = (e) => {
-  mouse.x = e.touches[0].clientX;
-  mouse.y = e.touches[0].clientY;
-  e.preventDefault();
+  mouse.x = e.touches[0].pageX;
+  mouse.y = e.touches[0].pageY;
+  // e.preventDefault(); // 스크롤 잠금
   for (let i = 0; i < 2; i++) {
     particleArray.push(new Particle());
   }
