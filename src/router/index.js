@@ -17,6 +17,7 @@ import FocusImg from "../pages/FocusImg.vue";
 import SpotLight from "../pages/SpotLight.vue";
 import ComparisonImg from "../pages/ComparisonImg.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
+import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 
 const routes = [
   {
@@ -108,6 +109,11 @@ const routes = [
     path: "/pattern",
     name: "pattern",
     component: CanvasPattern,
+  },
+  {
+    path: "/trackeyes",
+    name: "trackeyes",
+    component: CanvasTrackEyes,
   },
 ];
 

@@ -28,6 +28,7 @@ const routes = [
   { name: "focusimg" },
   { name: "spotlight" },
   { name: "pattern" },
+  { name: "trackeyes" },
 ];
 </script>
 
