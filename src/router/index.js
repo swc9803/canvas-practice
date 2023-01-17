@@ -16,6 +16,7 @@ import DragRotation from "../pages/DragRotation.vue";
 import FocusImg from "../pages/FocusImg.vue";
 import SpotLight from "../pages/SpotLight.vue";
 import ComparisonImg from "../pages/ComparisonImg.vue";
+import CanvasPattern from "../pages/CanvasPattern.vue";
 
 const routes = [
   {
@@ -102,6 +103,11 @@ const routes = [
     path: "/comparison",
     name: "comparison",
     component: ComparisonImg,
+  },
+  {
+    path: "/pattern",
+    name: "pattern",
+    component: CanvasPattern,
   },
 ];
 

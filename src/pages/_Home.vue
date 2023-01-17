@@ -27,6 +27,7 @@ const routes = [
   { name: "comparison" },
   { name: "focusimg" },
   { name: "spotlight" },
+  { name: "pattern" },
 ];
 </script>
 
