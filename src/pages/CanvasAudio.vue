@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
 const ctx = ref();
@@ -54,11 +54,46 @@ class Bar {
     this.index = index;
   }
   update(micInput) {
-    this.height = micInput * 1000;
+    const sound = micInput * 1000;
+    if (sound > this.height) {
+      this.height = sound;
+    } else {
+      this.height -= this.height * 0.03;
+    }
   }
   draw(context) {
-    context.fillStyle = this.color;
-    context.fillRect(this.x, this.y, this.width, this.height);
+    context.strokeStyle = this.color;
+    context.innerWidth = this.width;
+    context.save();
+    context.rotate(this.index * 0.043);
+    context.beginPath();
+    context.bezierCurveTo(
+      this.x / 2,
+      this.y / 2,
+      this.height * -0.5 - 150,
+      this.height + 50,
+      this.x,
+      this.y
+    );
+    context.stroke();
+
+    if (this.index > 170) {
+      ctx.value.beginPath();
+      ctx.value.arc(
+        this.x,
+        this.y + 10 + this.height / 2,
+        this.height * 0.1,
+        this.height * 0.05,
+        0,
+        Math.PI * 2
+      );
+      context.stroke();
+      context.beginPath();
+      context.moveTo(this.x, this.y + 10);
+      context.lineTo(this.x, this.y + 10 + this.height / 2);
+      context.stroke();
+    }
+    context.restore();
   }
 }
 
@@ -103,34 +138,56 @@ class Microphone {
 let fftSize = 512;
 const microphone = new Microphone(fftSize);
 
-onMounted(() => {
-  ctx.value = canvasRef.value.getContext("2d");
+const onResize = () => {
   canvasRef.value.width = window.innerWidth;
   canvasRef.value.height = window.innerHeight;
+};
+
+onMounted(() => {
+  ctx.value = canvasRef.value.getContext("2d");
+  onResize();
   let bars = [];
-  let barWidth = canvasRef.value.width / (fftSize / 2);
+  //   let barWidth = canvasRef.value.width / (fftSize / 2);
   function createBars() {
-    for (let i = 0; i < fftSize / 2; i++) {
-      bars.push(new Bar(barWidth * i, 200, 0.5, 250, "red", i));
+    for (let i = 1; i < fftSize / 2; i++) {
+      let color = `hsl(${i * 2}, 100%, 50%)`;
+      bars.push(new Bar(0, i * 0.9, 1, 0, color, i));
     }
   }
 
+  let softVolume = 0;
   function animate() {
     if (microphone.initialized) {
       ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
       const samples = microphone.getSamples();
-      //   console.log(samples);
+      const volume = microphone.getVolume();
+      ctx.value.save();
+      ctx.value.translate(
+        canvasRef.value.width / 2 - 70,
+        canvasRef.value.height / 2 + 50
+      );
       bars.forEach((bar, i) => {
         bar.update(samples[i]);
-        bar.draw(ctx.value, 1);
+        bar.draw(ctx.value);
       });
-    }
+      ctx.value.restore();
 
+      softVolume = softVolume * 0.9 + volume * 0.1;
+      snail.value.style.transform = `translate(-50%, -50%) scale(${
+        (1 + softVolume * 3, 1 + softVolume * 3)
+      })`;
+    }
     requestAnimationFrame(animate);
   }
 
   createBars();
   animate();
+  window.addEventListener("resize", onResize);
+});
+
+onBeforeUnmount(() => {
+  //   cancelAnimationFrame(flowFieldAnimation);
+  window.removeEventListener("resize", onResize);
 });
 </script>
 
@@ -146,15 +203,13 @@ svg {
   transform: translate3d(-50%, -50%, 0);
   top: 50%;
   left: 50%;
-  z-index: 1;
   width: 800px;
+  z-index: 1;
   .cls-1 {
     fill: none;
     stroke: url(#gradient);
     stroke-miterlimit: 10;
     stroke-width: 2;
-    stroke-dasharray: 1500;
-    stroke-dashoffset: 0;
   }
 }
 </style>
