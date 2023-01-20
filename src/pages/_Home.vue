@@ -30,6 +30,7 @@ const routes = [
   { name: "pattern" },
   { name: "trackeyes" },
   { name: "audio" },
+  { name: "matrix" },
 ];
 </script>
 
