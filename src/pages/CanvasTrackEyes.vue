@@ -83,7 +83,7 @@ class Eye {
 function init() {
   eyes = [];
   let overlapping = false;
-  let numberOfEyes = 20;
+  let numberOfEyes = 200;
   let protection = 10000;
   let counter = 0;
 
@@ -112,7 +112,7 @@ function init() {
 }
 function animate() {
   eyeAnimation = requestAnimationFrame(animate);
-  ctx.value.fillStyle = "rgba(0,0,0, 0.25)";
+  ctx.value.fillStyle = "rgba(0, 0, 0, 0.25)";
   ctx.value.fillRect(0, 0, canvasRef.value.width, canvasRef.value.height);
   for (let i = 0; i < eyes.length; i++) {
     eyes[i].draw();

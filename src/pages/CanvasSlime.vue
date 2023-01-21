@@ -8,6 +8,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
+let slimeAnimation;
 
 class Ball {
   constructor(effect) {
@@ -82,6 +83,13 @@ class MetaballsEffect {
 const ctx = ref();
 const effect = ref();
 
+function animate() {
+  ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
+  effect.value.update();
+  effect.value.draw(ctx.value);
+  slimeAnimation = requestAnimationFrame(animate);
+}
+
 const onResize = () => {
   canvasRef.value.width = window.innerWidth;
   canvasRef.value.height = window.innerHeight;
@@ -98,18 +106,13 @@ onMounted(() => {
   ctx.value = canvasRef.value.getContext("2d");
   onResize();
 
-  function animate() {
-    ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
-    effect.value.update();
-    effect.value.draw(ctx.value);
-    requestAnimationFrame(animate);
-  }
   animate();
 
   window.addEventListener("resize", onResize);
 });
 
 onBeforeUnmount(() => {
+  cancelAnimationFrame(slimeAnimation);
   window.removeEventListener("resize", onResize);
 });
 </script>

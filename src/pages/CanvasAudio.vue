@@ -44,6 +44,8 @@ const canvasRef = ref();
 const ctx = ref();
 const snail = ref();
 
+let audioObserveAnimation;
+
 class Bar {
   constructor(x, y, width, height, color, index) {
     this.x = x;
@@ -137,6 +139,39 @@ class Microphone {
 
 let fftSize = 512;
 const microphone = new Microphone(fftSize);
+let bars = [];
+const createBars = () => {
+  for (let i = 1; i < fftSize / 2; i++) {
+    let color = `hsl(${i * 2}, 100%, 50%)`;
+    bars.push(new Bar(0, i * 0.9, 1, 0, color, i));
+  }
+};
+
+let softVolume = 0;
+
+function animate() {
+  if (microphone.initialized) {
+    ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
+    const samples = microphone.getSamples();
+    const volume = microphone.getVolume();
+    ctx.value.save();
+    ctx.value.translate(
+      canvasRef.value.width / 2 - 70,
+      canvasRef.value.height / 2 + 50
+    );
+    bars.forEach((bar, i) => {
+      bar.update(samples[i]);
+      bar.draw(ctx.value);
+    });
+    ctx.value.restore();
+
+    softVolume = softVolume * 0.9 + volume * 0.1;
+    snail.value.style.transform = `translate(-50%, -50%) scale(${
+      (1 + softVolume * 3, 1 + softVolume * 3)
+    })`;
+  }
+  audioObserveAnimation = requestAnimationFrame(animate);
+}
 
 const onResize = () => {
   canvasRef.value.width = window.innerWidth;
@@ -146,39 +181,6 @@ const onResize = () => {
 onMounted(() => {
   ctx.value = canvasRef.value.getContext("2d");
   onResize();
-  let bars = [];
-  //   let barWidth = canvasRef.value.width / (fftSize / 2);
-  function createBars() {
-    for (let i = 1; i < fftSize / 2; i++) {
-      let color = `hsl(${i * 2}, 100%, 50%)`;
-      bars.push(new Bar(0, i * 0.9, 1, 0, color, i));
-    }
-  }
-
-  let softVolume = 0;
-  function animate() {
-    if (microphone.initialized) {
-      ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
-      const samples = microphone.getSamples();
-      const volume = microphone.getVolume();
-      ctx.value.save();
-      ctx.value.translate(
-        canvasRef.value.width / 2 - 70,
-        canvasRef.value.height / 2 + 50
-      );
-      bars.forEach((bar, i) => {
-        bar.update(samples[i]);
-        bar.draw(ctx.value);
-      });
-      ctx.value.restore();
-
-      softVolume = softVolume * 0.9 + volume * 0.1;
-      snail.value.style.transform = `translate(-50%, -50%) scale(${
-        (1 + softVolume * 3, 1 + softVolume * 3)
-      })`;
-    }
-    requestAnimationFrame(animate);
-  }
 
   createBars();
   animate();
@@ -186,7 +188,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  //   cancelAnimationFrame(flowFieldAnimation);
+  cancelAnimationFrame(audioObserveAnimation);
   window.removeEventListener("resize", onResize);
 });
 </script>

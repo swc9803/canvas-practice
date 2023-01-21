@@ -5,11 +5,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
 const ctx = ref();
 const effect = ref();
+let matrixAnimation;
 
 class Symbol {
   constructor(x, y, fontSize, canvasHeight) {
@@ -64,7 +65,7 @@ const onResize = () => {
 };
 
 let lastTime = 0;
-const fps = 160;
+const fps = 30;
 const nextFrame = 1000 / fps;
 let timer = 0;
 
@@ -82,7 +83,7 @@ function animate(timeStamp) {
   } else {
     timer += deltaTime;
   }
-  requestAnimationFrame(animate);
+  matrixAnimation = requestAnimationFrame(animate);
 }
 
 onMounted(() => {
@@ -91,6 +92,11 @@ onMounted(() => {
 
   animate(0);
   window.addEventListener("resize", onResize);
+});
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(matrixAnimation);
+  window.removeEventListener("resize", onResize);
 });
 </script>
 

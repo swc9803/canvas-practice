@@ -7,7 +7,9 @@
 import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
+const ctx = ref();
 const inputRef = ref();
+let particleAnimation;
 
 const msgData = ref("글자를 입력하세요");
 const msgTyping = (e) => {
@@ -176,6 +178,12 @@ class Effect {
 
 const effect = ref();
 
+function animate() {
+  ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
+  effect.value.render();
+  particleAnimation = requestAnimationFrame(animate);
+}
+
 const onResize = () => {
   canvasRef.value.width = window.innerWidth;
   canvasRef.value.height = window.innerHeight;
@@ -184,27 +192,20 @@ const onResize = () => {
 };
 
 onMounted(() => {
-  const ctx = canvasRef.value.getContext("2d", {
+  ctx.value = canvasRef.value.getContext("2d", {
     willReadFrequently: true,
   });
-  canvasRef.value.width = window.innerWidth;
-  canvasRef.value.height = window.innerHeight;
-
   effect.value = new Effect(ctx, canvasRef.value.width, canvasRef.value.height);
-  effect.value.wrapText(msgData.value);
+  onResize();
   effect.value.render();
 
-  function animate() {
-    ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
-    effect.value.render();
-    requestAnimationFrame(animate);
-  }
   animate();
 
   window.addEventListener("resize", onResize);
 });
 
 onBeforeUnmount(() => {
+  cancelAnimationFrame(particleAnimation);
   window.removeEventListener("resize", onResize);
 });
 </script>

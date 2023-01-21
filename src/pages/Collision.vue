@@ -9,6 +9,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
 const ctx = ref();
+let collisionAnimation;
 
 class Ball {
   constructor(stageWidth, stageHeight, radius, speed) {
@@ -133,7 +134,7 @@ class App {
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    collisionAnimation = requestAnimationFrame(this.animate.bind(this));
     this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
     this.block.draw(this.ctx);
     this.ball.draw(this.ctx, this.stageWidth, this.stageHeight, this.block);
@@ -142,13 +143,15 @@ class App {
 
 onMounted(() => {
   ctx.value = canvasRef.value.getContext("2d");
-  canvasRef.value.width = window.innerWidth;
-  canvasRef.value.height = window.innerHeight;
-
   new App();
+  //   canvasRef.value.width = window.innerWidth;
+  //   canvasRef.value.height = window.innerHeight;
 });
 
-onBeforeUnmount(() => {});
+onBeforeUnmount(() => {
+  cancelAnimationFrame(collisionAnimation);
+  //   new App.resize();
+});
 </script>
 
 <style lang="scss" scoped>
