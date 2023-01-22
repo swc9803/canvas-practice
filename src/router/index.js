@@ -13,7 +13,6 @@ import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
 import Collision from "../pages/Collision.vue";
 import DragRotation from "../pages/DragRotation.vue";
-import FocusImg from "../pages/FocusImg.vue";
 import SpotLight from "../pages/SpotLight.vue";
 import ComparisonImg from "../pages/ComparisonImg.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
@@ -91,11 +90,6 @@ const routes = [
     path: "/dragrotation",
     name: "dragrotation",
     component: DragRotation,
-  },
-  {
-    path: "/focusimg",
-    name: "focusimg",
-    component: FocusImg,
   },
   {
     path: "/spotlight",

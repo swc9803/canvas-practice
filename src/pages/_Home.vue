@@ -25,7 +25,6 @@ const routes = [
   { name: "collision" },
   { name: "dragrotation" },
   { name: "comparison" },
-  { name: "focusimg" },
   { name: "spotlight" },
   { name: "pattern" },
   { name: "trackeyes" },

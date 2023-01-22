@@ -91,11 +91,14 @@ function animate() {
   onAnimate.value = requestAnimationFrame(animate);
 }
 
-onMounted(() => {
-  ctx.value = canvasRef.value.getContext("2d");
+function onResize() {
   canvasRef.value.width = window.innerWidth;
   canvasRef.value.height = window.innerHeight;
+}
 
+onMounted(() => {
+  ctx.value = canvasRef.value.getContext("2d");
+  onResize();
   animate();
 
   window.addEventListener("resize", onResize);
@@ -105,11 +108,6 @@ onBeforeUnmount(() => {
   onAnimate.value = requestAnimationFrame(animate);
   window.cancelAnimationFrame("resize", onResize);
 });
-
-function onResize() {
-  canvasRef.value.width = window.innerWidth;
-  canvasRef.value.height = window.innerHeight;
-}
 </script>
 
 <style lang="scss" scoped>
