@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as PIXI from "pixi.js";
 
 PIXI.settings.RENDER_OPTIONS.helloDeprecated;
@@ -71,6 +71,9 @@ onMounted(() => {
     resizeTo: canvasRef.value,
   });
   draw(app);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", onResize);
 });
 </script>
 

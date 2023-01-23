@@ -83,12 +83,12 @@ function handleParticles() {
   }
 }
 
-const onAnimate = ref();
+let onAnimate;
 function animate() {
   ctx.value.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
   handleParticles();
   hue += 2;
-  onAnimate.value = requestAnimationFrame(animate);
+  onAnimate = requestAnimationFrame(animate);
 }
 
 function onResize() {
@@ -105,8 +105,8 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  onAnimate.value = requestAnimationFrame(animate);
-  window.cancelAnimationFrame("resize", onResize);
+  cancelAnimationFrame(onAnimate);
+  window.removeEventListener("resize", onResize);
 });
 </script>
 
