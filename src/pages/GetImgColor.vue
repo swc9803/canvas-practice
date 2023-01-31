@@ -187,7 +187,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
-  height: 100vh;
+  height: calc(var(--vh) * 100);
   transition: background 0.5s ease-in-out;
   scroll-snap-type: y mandatory;
   overflow-y: auto;

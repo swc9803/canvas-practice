@@ -58,7 +58,7 @@ onMounted(() => {
 .container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh) * 100);
   font-family: "Playfair Display";
   svg {
     position: absolute;
@@ -71,7 +71,7 @@ onMounted(() => {
       grid-template-columns: repeat(3, auto);
       align-items: center;
       width: 80%;
-      height: 100vh;
+      height: calc(var(--vh) * 100);
       margin: 0 auto;
       img {
         width: 100%;

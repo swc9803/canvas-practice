@@ -72,7 +72,7 @@ const onTouchMove = (e) => {
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh) * 100);
   .img {
     width: 300px;
     height: 300px;

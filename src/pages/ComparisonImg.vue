@@ -126,7 +126,7 @@ onMounted(() => {
     position: absolute;
     left: 50%;
     width: 6px;
-    height: 100vh;
+    height: calc(var(--vh) * 100);
     margin-left: -3.5px;
     background: white;
   }

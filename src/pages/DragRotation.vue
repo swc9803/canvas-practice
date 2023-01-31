@@ -40,7 +40,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh) * 100);
   background: skyblue;
   .imgWrapper {
     position: relative;

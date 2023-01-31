@@ -32,7 +32,7 @@ onMounted(() => {
 .container {
   position: absolute;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh) * 100);
   background: url(../../public/water.png);
   background-attachment: fixed;
   background-size: cover;
