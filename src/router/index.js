@@ -19,6 +19,7 @@ import CanvasPattern from "../pages/CanvasPattern.vue";
 import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
+import Corner from "../pages/CornerFocus.vue";
 
 const routes = [
   {
@@ -120,6 +121,11 @@ const routes = [
     path: "/matrix",
     name: "matrix",
     component: CanvasMatrix,
+  },
+  {
+    path: "/corner",
+    name: "corner",
+    component: Corner,
   },
 ];
 
