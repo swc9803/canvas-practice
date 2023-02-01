@@ -20,6 +20,8 @@ import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import Corner from "../pages/CornerFocus.vue";
+import Spotlight from "../pages/SpotLight.vue";
+import Test from "../pages/Test.vue";
 
 const routes = [
   {
@@ -126,6 +128,16 @@ const routes = [
     path: "/corner",
     name: "corner",
     component: Corner,
+  },
+  {
+    path: "/spotlight",
+    name: "spotlight",
+    component: Spotlight,
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Test,
   },
 ];
 

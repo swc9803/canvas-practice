@@ -31,6 +31,8 @@ const routes = [
   { name: "audio" },
   { name: "matrix" },
   { name: "corner" },
+  { name: "spotlight" },
+  { name: "test" },
 ];
 </script>
 
