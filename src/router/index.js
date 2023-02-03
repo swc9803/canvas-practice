@@ -22,6 +22,7 @@ import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import Corner from "../pages/CornerFocus.vue";
 import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
+import ScrollPlay from "../pages/ScrollPlay.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -139,6 +140,11 @@ const routes = [
     path: "/doll",
     name: "doll",
     component: Doll,
+  },
+  {
+    path: "/scrollplay",
+    name: "scrollplay",
+    component: ScrollPlay,
   },
   {
     path: "/test",

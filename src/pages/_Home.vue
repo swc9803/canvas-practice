@@ -33,6 +33,7 @@ const routes = [
   { name: "corner" },
   { name: "spotlight" },
   { name: "doll" },
+  { name: "scrollplay" },
   { name: "test" },
 ];
 </script>

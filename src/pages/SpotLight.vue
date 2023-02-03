@@ -2,6 +2,7 @@
   <div>
     <div v-show="loading">loading</div>
     <div v-show="!loading" ref="containerRef" class="container" />
+    <!-- 버튼 누르면 카메라 z--, animation -->
   </div>
 </template>
 
@@ -11,7 +12,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-// import gsap from "gsap";
+import gsap from "gsap";
 
 const containerRef = ref();
 const loading = ref(false);
@@ -22,7 +23,7 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
   alpha: true,
 });
-renderer.setClearColor(0x000000);
+// renderer.setClearColor(0x000000);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -53,16 +54,16 @@ plane.rotation.x = -Math.PI / 10;
 plane.position.set(0, -1, -0.1);
 scene.add(plane);
 
-const light1 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 10, 1);
+const light1 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 15, 1);
 light1.castShadow = true;
-light1.position.set(-1, 1.8, 0);
-light1.target.position.set(-1, 0, 0);
+light1.position.set(-1.1, 1.8, 0);
+light1.target.position.set(-1.2, 0, 0);
 scene.add(light1);
 scene.add(light1.target);
-const light2 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 10, 1);
+const light2 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 15, 1);
 light2.castShadow = true;
-light2.position.set(1, 1.8, 0);
-light2.target.position.set(1, 0, 0);
+light2.position.set(1.1, 1.8, 0);
+light2.target.position.set(1.2, 0, 0);
 scene.add(light2);
 scene.add(light2.target);
 
@@ -121,8 +122,8 @@ const onResize = () => {
   );
 };
 
-// const light1Ani = gsap.timeline();
-// const light2Ani = gsap.timeline();
+const light1Ani = gsap.timeline({ repeat: -1 });
+const light2Ani = gsap.timeline({ repeat: -1 });
 
 onMounted(() => {
   camera = new THREE.PerspectiveCamera(
@@ -135,20 +136,81 @@ onMounted(() => {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.update();
 
-  //   light1Ani.to(light1.position, {
-  //     x: 1.5,
-  //     yoyo: true,
-  //     repeat: -1,
-  //     duration: 2,
-  //     ease: "none",
-  //   });
-  //   light2Ani.to(light2.position, {
-  //     x: -1.5,
-  //     yoyo: true,
-  //     repeat: -1,
-  //     duration: 2,
-  //     ease: "none",
-  //   });
+  light1Ani
+    .to(light1.position, {
+      x: -2,
+      z: 0.5,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light1.position, {
+      x: -2.4,
+      z: -0.4,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light1.position, {
+      x: -2.1,
+      z: -0.8,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light1.position, {
+      x: -1.5,
+      z: -0.6,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light1.position, {
+      x: -0.9,
+      z: -0.4,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light1.position, {
+      x: -1.1,
+      z: 0,
+      duration: 0.4,
+      ease: "none",
+    });
+
+  light2Ani
+    .to(light2.position, {
+      x: 2,
+      z: 0.5,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light2.position, {
+      x: 2.4,
+      z: -0.4,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light2.position, {
+      x: 2.1,
+      z: -0.8,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light2.position, {
+      x: 1.5,
+      z: -0.6,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light2.position, {
+      x: 0.9,
+      z: -0.4,
+      duration: 1,
+      ease: "none",
+    })
+    .to(light2.position, {
+      x: 1.1,
+      z: 0,
+      duration: 0.4,
+      ease: "none",
+    });
 
   init();
   animate();
