@@ -41,26 +41,30 @@ const floorMaterial = new THREE.MeshPhongMaterial({
 });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.receiveShadow = true;
-scene.add(floor);
 floor.rotation.x = Math.PI / 2;
 floor.position.set(0, -1, 0);
+scene.add(floor);
 
 const planeGeometry = new THREE.PlaneGeometry(5, 5);
 const planeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.receiveShadow = true;
-scene.add(plane);
 plane.rotation.x = -Math.PI / 10;
 plane.position.set(0, -1, -0.1);
+scene.add(plane);
 
 const light1 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 10, 1);
 light1.castShadow = true;
+light1.position.set(-1, 1.8, 0);
+light1.target.position.set(-1, 0, 0);
 scene.add(light1);
-light1.position.set(-1.5, 1.8, 0);
+scene.add(light1.target);
 const light2 = new THREE.SpotLight(0xffffff, 1, 100, Math.PI / 10, 1);
 light2.castShadow = true;
+light2.position.set(1, 1.8, 0);
+light2.target.position.set(1, 0, 0);
 scene.add(light2);
-light2.position.set(-1.5, 1.8, -1);
+scene.add(light2.target);
 
 gltfLoader.load("/gob.gltf", (model) => {
   model.scene.traverse(function (node) {
@@ -68,8 +72,8 @@ gltfLoader.load("/gob.gltf", (model) => {
       node.castShadow = true;
     }
   });
-  scene.add(model.scene);
   model.scene.position.set(-1, -1, 0);
+  scene.add(model.scene);
 });
 gltfLoader.load("/gob.gltf", (model) => {
   model.scene.traverse(function (node) {
@@ -77,8 +81,8 @@ gltfLoader.load("/gob.gltf", (model) => {
       node.castShadow = true;
     }
   });
-  scene.add(model.scene);
   model.scene.position.set(0, -1, 0);
+  scene.add(model.scene);
 });
 gltfLoader.load("/gob.gltf", (model) => {
   model.scene.traverse(function (node) {
@@ -86,8 +90,8 @@ gltfLoader.load("/gob.gltf", (model) => {
       node.castShadow = true;
     }
   });
-  scene.add(model.scene);
   model.scene.position.set(1, -1, 0);
+  scene.add(model.scene);
   loading.value = false;
 });
 function init() {
@@ -127,7 +131,7 @@ onMounted(() => {
     0.1,
     1000
   );
-  camera.position.set(0, 0, 4);
+  camera.position.set(0, 6, 7);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.update();
 
