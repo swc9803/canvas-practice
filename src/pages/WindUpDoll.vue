@@ -1,8 +1,10 @@
 <template>
   <div class="container">
+    <!-- 빠르면 바람 나오게 -->
     <div class="imgWrapper">
       <div ref="imgRef" class="showImg" />
     </div>
+    <!-- 자동차 속도기 -->
     <img
       id="knob"
       src="https://greensock.com/wp-content/uploads/custom/draggable/img/knob.png"

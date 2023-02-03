@@ -32,6 +32,7 @@ const routes = [
   { name: "matrix" },
   { name: "corner" },
   { name: "spotlight" },
+  { name: "doll" },
   { name: "test" },
 ];
 </script>

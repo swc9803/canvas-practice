@@ -21,6 +21,7 @@ import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import Corner from "../pages/CornerFocus.vue";
 import Spotlight from "../pages/SpotLight.vue";
+import Doll from "../pages/WindUpDoll.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -133,6 +134,11 @@ const routes = [
     path: "/spotlight",
     name: "spotlight",
     component: Spotlight,
+  },
+  {
+    path: "/doll",
+    name: "doll",
+    component: Doll,
   },
   {
     path: "/test",
