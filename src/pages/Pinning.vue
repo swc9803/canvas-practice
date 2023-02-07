@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { gsap } from "gsap";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -147,6 +147,10 @@ onMounted(() => {
   slideImgTl5.to(slideImgArray.value[4], {
     x: "700px",
   });
+});
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 });
 </script>
 

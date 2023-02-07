@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { gsap } from "gsap";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,6 +44,10 @@ onMounted(() => {
       scrub: 0.5,
     },
   });
+});
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 });
 </script>
 

@@ -23,7 +23,8 @@ import Corner from "../pages/CornerFocus.vue";
 import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
-import Test from "../pages/Test.vue";
+import Textparticle from "../pages/TextParticle.vue";
+import Weather from "../pages/Weather.vue";
 
 const routes = [
   {
@@ -147,9 +148,14 @@ const routes = [
     component: ScrollPlay,
   },
   {
-    path: "/test",
-    name: "test",
-    component: Test,
+    path: "/textparticle",
+    name: "textparticle",
+    component: Textparticle,
+  },
+  {
+    path: "/weather",
+    name: "weather",
+    component: Weather,
   },
 ];
 
