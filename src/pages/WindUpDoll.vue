@@ -1,40 +1,76 @@
 <template>
   <div class="container">
-    <!-- 빠르면 바람 나오게 -->
-    <div class="imgWrapper">
-      <div ref="imgRef" class="showImg" />
+    <div class="screen"></div>
+    <div class="footer">
+      <svg
+        class="speed"
+        viewBox="0 0 82 82"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="41" cy="41" r="41" fill="#4A4A4A" />
+        <path
+          ref="handRef"
+          class="hand"
+          d="M31.2871 46.0643 7.23556 58.3432 30.816 45.1822 40.5189 40l.4711.8821-9.7029 5.1822Z"
+          fill="#FA4F4F"
+        />
+        <circle cx="41" cy="41" r="4" fill="#3A3A3A" />
+      </svg>
+      <div ref="springRef" class="spring">spin</div>
+      <div class="welcome">github{{ rotationValue }}</div>
     </div>
-    <!-- 자동차 속도기 -->
-    <img
-      id="knob"
-      src="https://greensock.com/wp-content/uploads/custom/draggable/img/knob.png"
-      width="410"
-      height="410"
-    />
-    <p>
-      {{ rotationValue }}
-    </p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
-const rotationValue = ref(100); // 초기 translate, ref값, 빼지는 값 동일하게
-const imgRef = ref();
+const springRef = ref();
+const handRef = ref();
+const rotationValue = ref();
+
+let draggableTrigger;
+let dragAnimation;
+
+function animate() {
+  handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
+  if (rotationValue.value > 0) {
+    rotationValue.value -= 0.1;
+  } else {
+    rotationValue.value = 0;
+  }
+  dragAnimation = requestAnimationFrame(animate);
+}
+
+let newRotation;
 
 onMounted(() => {
-  Draggable.create("#knob", {
+  animate();
+  draggableTrigger = Draggable.create(springRef.value, {
     type: "rotation",
-    bounds: { minRotation: 0, maxRotation: 1000 },
+    throwProps: true,
+    restrictions: {
+      rotation: [0, Infinity],
+    },
+    bounds: { minRotation: 0, maxRotation: 10000 },
     onDrag: function () {
-      rotationValue.value = 100 - this.rotation / 10;
-      imgRef.value.style.transform = `translate3d(0, ${rotationValue.value}%, 0)`;
+      if (this.rotation >= newRotation) {
+        rotationValue.value++;
+      } else {
+        rotationValue.value--;
+      }
+      newRotation = this.rotation;
     },
   });
+});
+
+onBeforeUnmount(() => {
+  draggableTrigger.forEach((trigger) => trigger.kill());
+  cancelAnimationFrame(dragAnimation);
 });
 </script>
 
@@ -42,30 +78,44 @@ onMounted(() => {
 .container {
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: skyblue;
-  .imgWrapper {
-    position: relative;
+  background: rgb(255, 216, 139);
+  overflow: hidden;
+  .screen {
+    height: calc(var(--vh) * 60);
+  }
+  .footer {
+    display: flex;
+    justify-content: space-evenly;
     width: 100%;
-    height: 50%;
-    overflow: hidden;
-    .showImg {
-      position: absolute;
-      transform: translate3d(0, 100%, 0);
-      width: 50%;
+    height: calc(var(--vh) * 40);
+    background: rgb(255, 255, 255);
+    .speed {
+      width: 30%;
       height: 100%;
-      background-image: url("~@/assets/gom.png");
-      background-repeat: no-repeat;
-      background-position: center;
+      //   background: red;
+      //   border-radius: 50%;
+      //   transform: rotate(20deg);
+    }
+    .spring {
+      width: 30%;
+      height: 100%;
+      background: rgb(247, 247, 247);
+      border-radius: 50%;
+    }
+    .welcome {
+      width: 30%;
+      height: 100%;
+      //   background: green;
+      @media screen and (max-width: 768px) {
+        & {
+          display: none;
+        }
+      }
     }
   }
-  #knob {
-    position: relative;
-    width: 50vw;
-    height: 50vw;
-    margin-top: 10px;
-  }
-  p {
-    position: absolute;
-  }
+}
+.hand {
+  transform-origin: center center;
+  //   transform: rotate(240deg);
 }
 </style>
