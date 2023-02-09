@@ -65,6 +65,7 @@ light2.target.position.set(0.5, 0, 0);
 scene.add(light2);
 scene.add(light2.target);
 
+// https://clara.io/library 라이센스 확인
 gltfLoader.load("/gob.gltf", (model) => {
   model.scene.traverse(function (node) {
     if (node.isMesh) {

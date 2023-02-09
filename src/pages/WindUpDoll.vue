@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="screen"></div>
+    <div class="screen">
+      <div class="box"></div>
+    </div>
     <div class="footer">
       <svg
         class="speed"
@@ -50,10 +52,19 @@ function animate() {
   } else {
     rotationValue.value = 0;
   }
+  boxAni.timeScale(rotationValue.value / 150);
   dragAnimation = requestAnimationFrame(animate);
 }
 
+const boxAni = gsap.timeline({ paused: true });
+
 onMounted(() => {
+  boxAni.to(".box", {
+    x: 100,
+    repeat: -1,
+    yoyo: true,
+  });
+  boxAni.play();
   animate();
   draggableTrigger = Draggable.create(springRef.value, {
     type: "rotation",
@@ -130,5 +141,10 @@ onBeforeUnmount(() => {
 }
 .hand {
   transform-origin: center center;
+}
+.box {
+  width: 100px;
+  height: 100px;
+  background: red;
 }
 </style>
