@@ -17,7 +17,11 @@
         />
         <circle cx="41" cy="41" r="4" fill="#3A3A3A" />
       </svg>
-      <div ref="springRef" class="spring">spin</div>
+      <div class="spring">
+        <div ref="springRef" class="drag" />
+        <img class="static" src="@/assets/static.png" />
+        <img ref="rotateRef" class="rotate" src="@/assets/rotate.png" />
+      </div>
       <div class="welcome">github{{ rotationValue }}</div>
     </div>
   </div>
@@ -29,15 +33,18 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
-const springRef = ref();
 const handRef = ref();
-const rotationValue = ref();
+const springRef = ref();
+const rotateRef = ref();
 
 let draggableTrigger;
 let dragAnimation;
+let newRotation;
+const rotationValue = ref(); // let으로 바꾸기
 
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
+  rotateRef.value.style.transform = `rotate(${rotationValue.value * 7.5}deg)`;
   if (rotationValue.value > 0) {
     rotationValue.value -= 0.1;
   } else {
@@ -46,21 +53,15 @@ function animate() {
   dragAnimation = requestAnimationFrame(animate);
 }
 
-let newRotation;
-
 onMounted(() => {
   animate();
   draggableTrigger = Draggable.create(springRef.value, {
     type: "rotation",
-    throwProps: true,
-    restrictions: {
-      rotation: [0, Infinity],
-    },
-    bounds: { minRotation: 0, maxRotation: 10000 },
+    // bounds: { minRotation: 0, maxRotation: 10000 },
     onDrag: function () {
-      if (this.rotation >= newRotation) {
+      if (this.rotation >= newRotation && rotationValue.value <= 240) {
         rotationValue.value++;
-      } else {
+      } else if (rotationValue.value != 0) {
         rotationValue.value--;
       }
       newRotation = this.rotation;
@@ -86,27 +87,40 @@ onBeforeUnmount(() => {
   .footer {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     width: 100%;
     height: calc(var(--vh) * 40);
     background: rgb(255, 255, 255);
     .speed {
       width: 30%;
-      height: 100%;
-      //   background: red;
-      //   border-radius: 50%;
-      //   transform: rotate(20deg);
     }
     .spring {
+      position: relative;
       width: 30%;
-      height: 100%;
-      background: rgb(247, 247, 247);
       border-radius: 50%;
+      transform-origin: center center;
+      .drag {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+      .static {
+        position: absolute;
+        width: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .rotate {
+        position: relative;
+        width: 100%;
+        pointer-events: none;
+      }
     }
     .welcome {
       width: 30%;
       height: 100%;
-      //   background: green;
-      @media screen and (max-width: 768px) {
+      @media (width <= 768px) {
         & {
           display: none;
         }
@@ -116,6 +130,5 @@ onBeforeUnmount(() => {
 }
 .hand {
   transform-origin: center center;
-  //   transform: rotate(240deg);
 }
 </style>
