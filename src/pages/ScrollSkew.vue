@@ -29,7 +29,7 @@ const skewSection = () => {
   newPos.value = window.pageYOffset;
   const speed = (newPos.value - originPos.value) * 0.3;
 
-  contentsRef.value.style.transform = `translate(-50%, 0) skewY(${speed}deg)`;
+  contentsRef.value.style.transform = `translate3d(-50%, 0, 0) skewY(${speed}deg)`;
   originPos.value = newPos.value;
   requestAnimationFrame(skewSection);
 };
@@ -50,7 +50,7 @@ onMounted(() => {
   section {
     position: relative;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate3d(-50%, 0, 0);
     width: 70%;
     margin: 100px 0;
     transition: 0.8s;

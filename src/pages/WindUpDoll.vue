@@ -44,6 +44,8 @@ let dragAnimation;
 let newRotation;
 const rotationValue = ref(); // let으로 바꾸기
 
+const boxAni = gsap.timeline({ paused: true });
+
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
   rotateRef.value.style.transform = `rotate(${rotationValue.value * 7.5}deg)`;
@@ -55,8 +57,6 @@ function animate() {
   boxAni.timeScale(rotationValue.value / 150);
   dragAnimation = requestAnimationFrame(animate);
 }
-
-const boxAni = gsap.timeline({ paused: true });
 
 onMounted(() => {
   boxAni.to(".box", {

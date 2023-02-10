@@ -24,7 +24,6 @@ import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
 import Textparticle from "../pages/TextParticle.vue";
-import Weather from "../pages/Weather.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -152,11 +151,6 @@ const routes = [
     path: "/textparticle",
     name: "textparticle",
     component: Textparticle,
-  },
-  {
-    path: "/weather",
-    name: "weather",
-    component: Weather,
   },
   {
     path: "/test",
