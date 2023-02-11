@@ -16,6 +16,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 const containerRef = ref();
 const loading = ref(false);
 let camera;
+let mixer;
 
 const raycaster = new THREE.Raycaster();
 const scene = new THREE.Scene();
@@ -65,36 +66,57 @@ light2.target.position.set(0.5, 0, 0);
 scene.add(light2);
 scene.add(light2.target);
 
-// https://clara.io/library 라이센스 확인
-gltfLoader.load("/gob.gltf", (model) => {
-  model.scene.traverse(function (node) {
-    if (node.isMesh) {
-      node.castShadow = true;
-    }
-  });
-  model.scene.position.set(-1, -1, 0);
-  scene.add(model.scene);
-});
-gltfLoader.load("/gob.gltf", (model) => {
-  model.scene.traverse(function (node) {
-    if (node.isMesh) {
-      node.castShadow = true;
-    }
-  });
-  model.scene.position.set(0, -1, 0);
-  scene.add(model.scene);
-  camera.lookAt(model.scene.position);
-});
-gltfLoader.load("/gob.gltf", (model) => {
-  model.scene.traverse(function (node) {
-    if (node.isMesh) {
-      node.castShadow = true;
-    }
-  });
-  model.scene.position.set(1, -1, 0);
-  scene.add(model.scene);
-  loading.value = false;
-});
+gltfLoader.load(
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/old-korrigan/model.gltf",
+  (model) => {
+    model.scene.traverse(function (node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    model.scene.position.set(-1, -1, 0);
+    scene.add(model.scene);
+    setTimeout(() => {
+      mixer = new THREE.AnimationMixer(model.scene);
+      mixer.clipAction(model.animations[0]).play();
+    }, 5000);
+    // 각각 모델 로딩 조건
+  }
+);
+gltfLoader.load(
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/young-korrigan/model.gltf",
+  (model) => {
+    model.scene.traverse(function (node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    model.scene.position.set(0, -1, 0);
+    scene.add(model.scene);
+    camera.lookAt(model.scene.position);
+    setTimeout(() => {
+      mixer = new THREE.AnimationMixer(model.scene);
+      mixer.clipAction(model.animations[0]).play();
+    }, 5000);
+  }
+);
+gltfLoader.load(
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/korrigan-hat/model.gltf",
+  (model) => {
+    model.scene.traverse(function (node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+      }
+    });
+    model.scene.position.set(1, -1, 0);
+    scene.add(model.scene);
+    setTimeout(() => {
+      mixer = new THREE.AnimationMixer(model.scene);
+      mixer.clipAction(model.animations[0]).play();
+    }, 5000);
+    loading.value = false;
+  }
+);
 
 const mouse = new THREE.Vector2();
 
@@ -111,6 +133,7 @@ function init() {
 let raf;
 function animate() {
   camera.updateMatrixWorld();
+  if (mixer) mixer.update(0.01);
   renderer.render(scene, camera);
   raf = requestAnimationFrame(animate);
 }
