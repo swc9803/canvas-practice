@@ -205,6 +205,7 @@ function onClick(e) {
       clicked.value = true;
       mixer = new THREE.AnimationMixer(model3.scene);
       mixer.clipAction(model3.animations[0]).play();
+      mixer.clipAction(model3.animations[2]).play();
       gsap.to(camera.position, {
         x: 1,
         y: -0.1,
