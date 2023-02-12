@@ -1,8 +1,13 @@
 <template>
-  <div>
-    <div v-show="loading">loading</div>
-    <div v-show="!loading" ref="containerRef" class="container" />
-    <!-- 버튼 누르면 카메라 z--, animation -->
+  <div class="wrapper">
+    <Transition name="fade">
+      <div v-show="loading" class="loading">Loading...</div>
+    </Transition>
+    <Transition name="fade">
+      <div v-show="!loading" ref="containerRef" class="container" />
+    </Transition>
+    <h2 v-show="!loading">{{ message }}</h2>
+    <div v-show="clicked" @click="reSelection" class="retry">Retry</div>
   </div>
 </template>
 
@@ -11,14 +16,17 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-// import gsap from "gsap";
+import gsap from "gsap";
 
 const containerRef = ref();
 const loading = ref(false);
+const clicked = ref(false);
 let camera;
 let mixer;
+const message = ref("Choose your favorite!");
 
 const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -66,59 +74,54 @@ light2.target.position.set(0.5, 0, 0);
 scene.add(light2);
 scene.add(light2.target);
 
+// The source of models are https://market.pmnd.rs/
+let model1, model2, model3;
 gltfLoader.load(
-  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/old-korrigan/model.gltf",
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/druid/model.gltf",
   (model) => {
+    model1 = model;
     model.scene.traverse(function (node) {
       if (node.isMesh) {
         node.castShadow = true;
+        node.name = "model1";
       }
     });
+    model.scene.scale.set(0.5, 0.5, 0.5);
     model.scene.position.set(-1, -1, 0);
     scene.add(model.scene);
-    setTimeout(() => {
-      mixer = new THREE.AnimationMixer(model.scene);
-      mixer.clipAction(model.animations[0]).play();
-    }, 5000);
-    // 각각 모델 로딩 조건
-  }
-);
-gltfLoader.load(
-  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/young-korrigan/model.gltf",
-  (model) => {
-    model.scene.traverse(function (node) {
-      if (node.isMesh) {
-        node.castShadow = true;
-      }
-    });
-    model.scene.position.set(0, -1, 0);
-    scene.add(model.scene);
-    camera.lookAt(model.scene.position);
-    setTimeout(() => {
-      mixer = new THREE.AnimationMixer(model.scene);
-      mixer.clipAction(model.animations[0]).play();
-    }, 5000);
   }
 );
 gltfLoader.load(
   "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/korrigan-hat/model.gltf",
   (model) => {
+    model2 = model;
     model.scene.traverse(function (node) {
       if (node.isMesh) {
         node.castShadow = true;
+        node.name = "model2";
       }
     });
+    model.scene.position.set(0, -1, 0);
+    scene.add(model.scene);
+    camera.lookAt(model.scene.position);
+  }
+);
+gltfLoader.load(
+  "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/korrigan-wolf/model.gltf",
+  (model) => {
+    model3 = model;
+    model.scene.traverse(function (node) {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.name = "model3";
+      }
+    });
+    model.scene.scale.set(0.85, 0.85, 0.85);
     model.scene.position.set(1, -1, 0);
     scene.add(model.scene);
-    setTimeout(() => {
-      mixer = new THREE.AnimationMixer(model.scene);
-      mixer.clipAction(model.animations[0]).play();
-    }, 5000);
     loading.value = false;
   }
 );
-
-const mouse = new THREE.Vector2();
 
 function init() {
   loading.value = true;
@@ -144,17 +147,96 @@ function moveLight() {
   angle += 0.03;
   light1.position.set(Math.cos(angle) * 1.5, 3, Math.sin(angle) * 1.5);
   light2.position.set(Math.cos(angle) * -1.5, 3, Math.sin(angle) * -1.5);
-  //   gsap.to(light1.position, {
-  //     x: Math.cos(angle) * 1.5,
-  //     z: Math.sin(angle) * 1.5,
-  //     ease: "none",
-  //   });
-  //   gsap.to(light2.position, {
-  //     x: Math.cos(angle) * -1.5,
-  //     z: Math.sin(angle) * -1.5,
-  //     ease: "none",
-  //   });
   lightRaf = requestAnimationFrame(moveLight);
+}
+
+function onClick(e) {
+  e.preventDefault();
+  mouse.x = (e.clientX / containerRef.value.offsetWidth) * 2 - 1;
+  mouse.y = -(e.clientY / containerRef.value.offsetHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+    const object = intersects[0].object;
+    if (object.name === "model1") {
+      cancelAnimationFrame(lightRaf);
+      message.value = "The winner is Druid!";
+      clicked.value = true;
+      mixer = new THREE.AnimationMixer(model1.scene);
+      mixer.clipAction(model1.animations[0]).play();
+      gsap.to(camera.position, {
+        x: -1,
+        y: -0.1,
+        z: 1,
+        duration: 1,
+      });
+      gsap.to(light1.target.position, {
+        x: -1,
+        duration: 1,
+      });
+      gsap.to(light2.target.position, {
+        x: -1,
+        duration: 1,
+      });
+    } else if (object.name === "model2") {
+      cancelAnimationFrame(lightRaf);
+      message.value = "The winner is Korrigan Hat!";
+      clicked.value = true;
+      mixer = new THREE.AnimationMixer(model2.scene);
+      mixer.clipAction(model2.animations[0]).play();
+      gsap.to(camera.position, {
+        x: 0,
+        y: -0.1,
+        z: 1,
+        duration: 1,
+      });
+      gsap.to(light1.target.position, {
+        x: 0,
+        duration: 1,
+      });
+      gsap.to(light2.target.position, {
+        x: 0,
+        duration: 1,
+      });
+    } else if (object.name === "model3") {
+      cancelAnimationFrame(lightRaf);
+      message.value = "The winner is Korrigan Wolf!";
+      clicked.value = true;
+      mixer = new THREE.AnimationMixer(model3.scene);
+      mixer.clipAction(model3.animations[0]).play();
+      gsap.to(camera.position, {
+        x: 1,
+        y: -0.1,
+        z: 1,
+        duration: 1,
+      });
+      gsap.to(light1.target.position, {
+        x: 1,
+        duration: 1,
+      });
+      gsap.to(light2.target.position, {
+        x: 1,
+        duration: 1,
+      });
+    }
+  }
+}
+
+function reSelection() {
+  clicked.value = false;
+  mixer.clipAction(model1.animations[0]).stop();
+  mixer.clipAction(model2.animations[0]).stop();
+  mixer.clipAction(model3.animations[0]).stop();
+  gsap.to(camera.position, {
+    x: 0,
+    y: 0.5,
+    z: 3,
+    duration: 1,
+  });
+  light1.target.position.set(-0.5, 0, 0);
+  light2.target.position.set(0.5, 0, 0);
+  moveLight();
 }
 
 const onResize = () => {
@@ -176,26 +258,11 @@ onMounted(() => {
   );
   camera.position.set(0, 0.5, 3);
 
-  renderer.domElement.addEventListener("click", (event) => {
-    event.preventDefault();
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children, true);
-    if (intersects.length > 0) {
-      for (var i = 0; i < intersects.length; i++) {
-        if (intersects[i].object.name !== "plane") {
-          console.log(intersects[i].object);
-          break;
-        }
-      }
-    }
-  });
-
   init();
   animate();
   moveLight();
 
+  renderer.domElement.addEventListener("click", onClick);
   window.addEventListener("resize", onResize);
 });
 
@@ -207,8 +274,58 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.wrapper {
   width: 100%;
   height: calc(var(--vh) * 100);
+  background: black;
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: red;
+    color: white;
+  }
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  h2 {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    color: white;
+    text-align: center;
+    pointer-events: none;
+  }
+  .retry {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    background: rgb(200, 255, 0);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
