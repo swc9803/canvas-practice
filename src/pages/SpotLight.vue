@@ -55,7 +55,8 @@ floor.rotation.x = Math.PI / 2;
 floor.position.set(0, -1, 0);
 scene.add(floor);
 
-const planeGeometry = new THREE.PlaneGeometry(5, 5);
+// 벽
+const planeGeometry = new THREE.PlaneGeometry(7, 5);
 const planeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.receiveShadow = true;
@@ -200,7 +201,6 @@ function onClick(e) {
         duration: 1,
       });
     } else if (object.name === "model3") {
-      cancelAnimationFrame(lightRaf);
       message.value = "The winner is Korrigan Wolf!";
       clicked.value = true;
       mixer = new THREE.AnimationMixer(model3.scene);
@@ -219,12 +219,14 @@ function onClick(e) {
         x: 1,
         duration: 1,
       });
+      cancelAnimationFrame(lightRaf);
     }
   }
 }
 
 function reSelection() {
   clicked.value = false;
+  message.value = "Choose your favorite!";
   mixer.clipAction(model1.animations[0]).stop();
   mixer.clipAction(model2.animations[0]).stop();
   mixer.clipAction(model3.animations[0]).stop();
@@ -234,9 +236,21 @@ function reSelection() {
     z: 3,
     duration: 1,
   });
-  light1.target.position.set(-0.5, 0, 0);
-  light2.target.position.set(0.5, 0, 0);
-  moveLight();
+  gsap.to(light1.target.position, {
+    x: -0.5,
+    y: 0,
+    z: 0,
+    duration: 0.3,
+  });
+  gsap.to(light2.target.position, {
+    x: 0.5,
+    y: 0,
+    z: 0,
+    duration: 0.3,
+    onComplete: () => {
+      moveLight();
+    },
+  });
 }
 
 const onResize = () => {
