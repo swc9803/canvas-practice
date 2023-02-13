@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="screen">
-      <div class="box"></div>
+      <div class="velocity" v-for="wind in 10" :key="wind" />
+      <div class="box" />
     </div>
     <div class="footer">
       <svg
@@ -78,6 +79,20 @@ onMounted(() => {
       newRotation = this.rotation;
     },
   });
+
+  gsap.set(".velocity", {
+    top: "random(3, 60)%",
+    left: "random(60, 160)%",
+  });
+  gsap.to(".velocity", {
+    left: "-90px",
+    scaleX: 5,
+    opacity: 1,
+    duration: 2,
+    ease: "none",
+    stagger: 0.3,
+    repeat: -1,
+  });
 });
 
 onBeforeUnmount(() => {
@@ -90,10 +105,24 @@ onBeforeUnmount(() => {
 .container {
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: rgb(255, 216, 139);
+  //   background: rgb(255, 216, 139);
+  background: black;
   overflow: hidden;
   .screen {
     height: calc(var(--vh) * 60);
+    .velocity {
+      position: absolute;
+      width: 30px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      //   transform-origin: left;
+    }
+    .box {
+      width: 100px;
+      height: 100px;
+      background: red;
+    }
   }
   .footer {
     display: flex;
@@ -103,13 +132,12 @@ onBeforeUnmount(() => {
     height: calc(var(--vh) * 40);
     background: rgb(255, 255, 255);
     .speed {
-      width: 30%;
+      height: 100%;
     }
     .spring {
       position: relative;
-      width: 30%;
-      border-radius: 50%;
-      transform-origin: center center;
+      height: 100%;
+      //   transform-origin: center center;
       .drag {
         position: absolute;
         width: 100%;
@@ -141,10 +169,5 @@ onBeforeUnmount(() => {
 }
 .hand {
   transform-origin: center center;
-}
-.box {
-  width: 100px;
-  height: 100px;
-  background: red;
 }
 </style>
