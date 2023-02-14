@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="screen">
-      <div class="velocity" v-for="wind in 10" :key="wind" />
+      <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
       <div class="box" />
     </div>
     <div class="footer">
@@ -39,6 +39,7 @@ gsap.registerPlugin(Draggable);
 const handRef = ref();
 const springRef = ref();
 const rotateRef = ref();
+const velocityRef = ref();
 
 let draggableTrigger;
 let dragAnimation;
@@ -46,6 +47,7 @@ let newRotation;
 const rotationValue = ref(); // let으로 바꾸기
 
 const boxAni = gsap.timeline({ paused: true });
+const velocityAni = gsap.timeline({ paused: true });
 
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
@@ -55,44 +57,57 @@ function animate() {
   } else {
     rotationValue.value = 0;
   }
+  if (rotationValue.value > 180) {
+    velocityAni.resume();
+  } else if (rotationValue.value <= 180 && rotationValue.value >= 150) {
+    gsap.to(velocityRef.value, {
+      opacity: 0,
+      duration: 1,
+      onComplete: () => {
+        velocityAni.restart();
+        velocityAni.pause();
+      },
+    });
+  }
   boxAni.timeScale(rotationValue.value / 150);
   dragAnimation = requestAnimationFrame(animate);
 }
 
 onMounted(() => {
-  boxAni.to(".box", {
-    x: 100,
-    repeat: -1,
-    yoyo: true,
-  });
-  boxAni.play();
   animate();
   draggableTrigger = Draggable.create(springRef.value, {
     type: "rotation",
     // bounds: { minRotation: 0, maxRotation: 10000 },
     onDrag: function () {
       if (this.rotation >= newRotation && rotationValue.value <= 240) {
-        rotationValue.value++;
+        rotationValue.value += 0.4;
       } else if (rotationValue.value != 0) {
-        rotationValue.value--;
+        rotationValue.value -= 0.4;
       }
       newRotation = this.rotation;
     },
   });
 
-  gsap.set(".velocity", {
+  // velocity
+  gsap.set(velocityRef.value, {
     top: "random(3, 60)%",
     left: "random(60, 160)%",
   });
-  gsap.to(".velocity", {
+  velocityAni.to(velocityRef.value, {
     left: "-90px",
     scaleX: 5,
     opacity: 1,
-    duration: 2,
+    duration: 1,
     ease: "none",
     stagger: 0.3,
     repeat: -1,
   });
+  boxAni.to(".box", {
+    x: 100,
+    repeat: -1,
+    yoyo: true,
+  });
+  boxAni.play();
 });
 
 onBeforeUnmount(() => {
