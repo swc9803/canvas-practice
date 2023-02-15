@@ -2,7 +2,220 @@
   <div class="container">
     <div class="screen">
       <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
-      <div class="box" />
+      <svg class="toy" viewBox="0 0 150 317">
+        <g id="Frame 5" clip-path="url(#clip0_12_2)">
+          <g id="toy">
+            <g id="leg1">
+              <path
+                id="Rectangle 17"
+                fill="#242424"
+                d="M62.7683 219.982h22v85h-22z"
+                transform="rotate(-30 62.7683 219.982)"
+              />
+              <path
+                id="Rectangle 18"
+                fill="#000"
+                d="M103.036 293.728c-.828-1.435-.337-3.27 1.098-4.098l20.496-11.834c3.508-2.025 7.993-.823 10.018 2.684 1.012 1.754.411 3.997-1.342 5.009l-23.672 13.667c-1.435.828-3.269.337-4.098-1.098l-2.5-4.33Z"
+              />
+            </g>
+            <g id="leg2">
+              <path
+                id="Rectangle 17_2"
+                fill="#242424"
+                d="M65.7682 208.982h22v85h-22z"
+                transform="rotate(30 65.7682 208.982)"
+              />
+              <path
+                id="Rectangle 18_2"
+                fill="#000"
+                d="M22.0362 280.728c.8284-1.435 2.6632-1.927 4.098-1.098l20.496 11.833c3.5075 2.025 4.7092 6.51 2.6842 10.017-1.0126 1.754-3.2551 2.355-5.0088 1.343l-23.6714-13.667c-1.4348-.829-1.9265-2.663-1.098-4.098l2.5-4.33Z"
+              />
+            </g>
+            <g id="spring">
+              <g id="Ellipse 28">
+                <mask id="path-5-inside-1_12_2" fill="#fff">
+                  <path
+                    d="M40.7003 178.589c0 6.652-5.3921 12.044-12.0437 12.044-6.6515 0-12.0437-5.392-12.0437-12.044 0-6.651 5.3922-12.043 12.0437-12.043 6.6516 0 12.0437 5.392 12.0437 12.043Zm-19.1254 0c0 3.912 3.1706 7.082 7.0817 7.082s7.0817-3.17 7.0817-7.082c0-3.911-3.1706-7.081-7.0817-7.081s-7.0817 3.17-7.0817 7.081Z"
+                  />
+                </mask>
+                <path
+                  fill="#D5D5D5"
+                  stroke="#B1B1B1"
+                  stroke-width="2"
+                  d="M40.7003 178.589c0 6.652-5.3921 12.044-12.0437 12.044-6.6515 0-12.0437-5.392-12.0437-12.044 0-6.651 5.3922-12.043 12.0437-12.043 6.6516 0 12.0437 5.392 12.0437 12.043Zm-19.1254 0c0 3.912 3.1706 7.082 7.0817 7.082s7.0817-3.17 7.0817-7.082c0-3.911-3.1706-7.081-7.0817-7.081s-7.0817 3.17-7.0817 7.081Z"
+                  mask="url(#path-5-inside-1_12_2)"
+                />
+              </g>
+              <g id="Ellipse 29">
+                <mask id="path-6-inside-2_12_2" fill="#fff">
+                  <path
+                    d="M40.7003 209.1c0 6.652-5.3921 12.044-12.0437 12.044-6.6515 0-12.0437-5.392-12.0437-12.044 0-6.651 5.3922-12.044 12.0437-12.044 6.6516 0 12.0437 5.393 12.0437 12.044Zm-19.1254 0c0 3.911 3.1706 7.082 7.0817 7.082s7.0817-3.171 7.0817-7.082-3.1706-7.082-7.0817-7.082-7.0817 3.171-7.0817 7.082Z"
+                  />
+                </mask>
+                <path
+                  fill="#D5D5D5"
+                  stroke="#B1B1B1"
+                  stroke-width="2"
+                  d="M40.7003 209.1c0 6.652-5.3921 12.044-12.0437 12.044-6.6515 0-12.0437-5.392-12.0437-12.044 0-6.651 5.3922-12.044 12.0437-12.044 6.6516 0 12.0437 5.393 12.0437 12.044Zm-19.1254 0c0 3.911 3.1706 7.082 7.0817 7.082s7.0817-3.171 7.0817-7.082-3.1706-7.082-7.0817-7.082-7.0817 3.171-7.0817 7.082Z"
+                  mask="url(#path-6-inside-2_12_2)"
+                />
+              </g>
+              <path
+                id="Vector"
+                fill="#D5D5D5"
+                stroke="#B1B1B1"
+                d="M14.6562 194.222c-.0572-1.747.595-3.661 2.2334-6.301h37.7631v11.847h-37.771c-1.4057-2.142-2.1686-3.805-2.2255-5.546Z"
+              />
+            </g>
+            <g id="Group">
+              <circle
+                id="Ellipse 25"
+                cx="114.943"
+                cy="207.266"
+                r="7.5"
+                fill="#FFE8AE"
+                transform="rotate(-45 114.943 207.266)"
+              />
+              <path
+                id="Rectangle 19"
+                fill="#EA4545"
+                d="M71.4561 174.385c-2.9289-2.929-2.9289-7.678 0-10.607 2.9289-2.929 7.6777-2.929 10.6066 0l32.8803 32.881-10.606 10.606-32.8809-32.88Z"
+              />
+              <rect
+                id="Rectangle 20"
+                width="15"
+                height="6"
+                x="102.922"
+                y="205.851"
+                fill="#FAFAFA"
+                rx="1"
+                transform="rotate(-45 102.922 205.851)"
+              />
+            </g>
+            <g id="gun">
+              <path
+                id="Rectangle 22"
+                fill="#1E1E1E"
+                d="M1.89035 5.40104c.64839-1.17067 1.2824-1.51235 2.89764-1.536L29.8449 51.1345l31.848 60.0805 31.1455 58.756-3.4772 1.843L1.89035 5.40104Z"
+              />
+              <path
+                id="Rectangle 23"
+                fill="#623B00"
+                d="M110.905 212.457c-10.054-15.466-14.6685-24.39-21.5438-40.643l3.4772-1.843-49.8796-94.0973c1.0118-.976 1.6531-1.2908 2.8976-1.536L95.736 168.435l25.021 38.799c-2.53 4.53-4.698 5.644-9.852 5.223Z"
+              />
+            </g>
+            <g id="body">
+              <path
+                id="Vector_2"
+                fill="#C33"
+                d="M50.629 168.95c-.2754-4.846 2.9613-9.251 7.7403-10.094 10.0569-1.775 17.8911-1.733 28.0146.09 4.5741.825 7.7688 4.914 7.7688 9.562v58.064h-42.5l1-16.026v-6L50.629 168.95Z"
+              />
+              <circle
+                id="Ellipse 22"
+                cx="90.6527"
+                cy="179.046"
+                r="2.5"
+                fill="#EDC124"
+              />
+              <circle
+                id="Ellipse 23"
+                cx="90.6527"
+                cy="188.046"
+                r="2.5"
+                fill="#EDC124"
+              />
+              <circle
+                id="Ellipse 24"
+                cx="90.6527"
+                cy="197.046"
+                r="2.5"
+                fill="#EDC124"
+              />
+              <path
+                id="Rectangle 15"
+                fill="#FAFAFA"
+                d="M52.6528 204.546h41.5v6H52.6527l.0001-3v-3Z"
+              />
+              <path
+                id="Rectangle 16"
+                fill="#FAFAFA"
+                d="m55.1527 160.046 39 41.5v3H89.247l-38.0943-39.5c.8709-2.333 1.7508-3.41 4-5Z"
+              />
+            </g>
+            <g id="arm">
+              <circle
+                id="Ellipse 25_2"
+                cx="41.398"
+                cy="211.556"
+                r="7.5"
+                fill="#FFE8AE"
+                transform="rotate(30 41.398 211.556)"
+              />
+              <path
+                id="Rectangle 19_2"
+                fill="#EA4545"
+                d="M61.9028 161.041c2.0711-3.587 6.658-4.816 10.2452-2.745 3.5872 2.071 4.8163 6.658 2.7452 10.245l-23.25 40.27-12.9904-7.5 23.25-40.27Z"
+              />
+              <rect
+                id="Rectangle 20_2"
+                width="15"
+                height="6"
+                x="39.6528"
+                y="199.579"
+                fill="#FAFAFA"
+                rx="1"
+                transform="rotate(30 39.6528 199.579)"
+              />
+            </g>
+            <g id="face">
+              <circle
+                id="Ellipse 19"
+                cx="72.1528"
+                cy="140.572"
+                r="21"
+                fill="#FFE8AE"
+              />
+              <circle
+                id="Ellipse 20"
+                cx="87.1528"
+                cy="136.572"
+                r="2"
+                fill="#000"
+              />
+              <path
+                id="Ellipse 21"
+                fill="#000"
+                d="M93.0828 142.761c.6202 1.378-.5101 3.23-2.5246 4.137-2.0144.906-4.1503.525-4.7705-.853-.6202-1.378 1.8997-.679 3.9142-1.585 2.0145-.907 2.7606-3.077 3.3809-1.699Z"
+              />
+            </g>
+            <g id="hat">
+              <ellipse
+                id="Ellipse 18"
+                cx="87.1527"
+                cy="128.072"
+                fill="#383838"
+                rx="19"
+                ry="3.5"
+              />
+              <path
+                id="Rectangle 21"
+                fill="#FAFAFA"
+                d="m58.059 128.576 6.8619-1.384 7.2318 34.376c-3.0085-.069-4.5-.022-8-1.572l-6.0937-31.42Z"
+              />
+              <path
+                id="Rectangle 13"
+                fill="#C33"
+                d="M49.1527 76.5721c16.1166-1.3805 25.3201-1.3567 42 0l-4 49.4999v3.5h-34v-3.5l-4-49.4999Z"
+              />
+            </g>
+          </g>
+        </g>
+        <defs>
+          <clipPath id="clip0_12_2">
+            <path fill="#fff" d="M0 0h150v317H0z" />
+          </clipPath>
+        </defs>
+      </svg>
     </div>
     <div class="footer">
       <!-- 속도계 -->
@@ -104,7 +317,7 @@
         </svg>
       </div>
       <div class="welcome">
-        Questions and loves are welcome!
+        Loves and Questions are welcome!
         <!-- {{ rotationValue }} -->
       </div>
     </div>
@@ -127,7 +340,7 @@ let dragAnimation;
 let newRotation;
 const rotationValue = ref(0); // let으로 바꾸기
 
-const boxAni = gsap.timeline({ paused: true });
+const walkingAni = gsap.timeline({ paused: true });
 const velocityAni = gsap.timeline({ paused: true });
 
 function animate() {
@@ -151,7 +364,7 @@ function animate() {
     });
   }
   // timeScale이 0이면 오류 발생
-  boxAni.timeScale(rotationValue.value / 150);
+  walkingAni.timeScale(rotationValue.value / 150);
   dragAnimation = requestAnimationFrame(animate);
 }
 
@@ -183,12 +396,46 @@ onMounted(() => {
     stagger: 0.3,
     repeat: -1,
   });
-  boxAni.to(".box", {
-    x: 100,
+
+  walkingAni.to("#leg1", {
+    rotate: 60,
     repeat: -1,
     yoyo: true,
+    ease: "none",
   });
-  boxAni.play();
+  walkingAni.to(
+    "#leg2",
+    {
+      rotate: -60,
+      transformOrigin: "100% 0",
+      repeat: -1,
+      yoyo: true,
+      ease: "none",
+    },
+    "<"
+  );
+  walkingAni.to(
+    "#arm",
+    {
+      rotate: -60,
+      transformOrigin: "100% 0",
+      repeat: -1,
+      yoyo: true,
+      ease: "none",
+    },
+    "<"
+  );
+  walkingAni.to(
+    "#spring",
+    {
+      rotateX: -60,
+      repeat: -1,
+      yoyo: true,
+      ease: "none",
+    },
+    "<"
+  );
+  walkingAni.play();
 });
 
 onBeforeUnmount(() => {
@@ -213,10 +460,12 @@ onBeforeUnmount(() => {
       opacity: 0;
       transform-origin: 100%;
     }
-    .box {
-      width: 100px;
-      height: 100px;
-      background: red;
+    .toy {
+      position: relative;
+      top: 20%;
+      left: 5%;
+      //   width: 50%;
+      height: 60%;
     }
   }
   .footer {
@@ -242,7 +491,7 @@ onBeforeUnmount(() => {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background: red;
+        background: #cc3333;
       }
       .rotate {
         position: relative;
