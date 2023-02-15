@@ -316,10 +316,7 @@
           </defs>
         </svg>
       </div>
-      <div class="welcome">
-        Loves and Questions are welcome!
-        <!-- {{ rotationValue }} -->
-      </div>
+      <div class="welcome">Loves and Questions are welcome!</div>
     </div>
   </div>
 </template>
@@ -346,8 +343,10 @@ const velocityAni = gsap.timeline({ paused: true });
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
   rotateRef.value.style.transform = `rotate(${rotationValue.value * 7.5}deg)`;
-  if (rotationValue.value > 0.01) {
-    rotationValue.value -= 0.1;
+  if (rotationValue.value > 20) {
+    rotationValue.value *= 0.9995;
+  } else if (rotationValue.value > 0.01) {
+    rotationValue.value -= 0.01;
   } else if (rotationValue.value <= 0) {
     rotationValue.value = 0.01;
   }
@@ -428,9 +427,10 @@ onMounted(() => {
   walkingAni.to(
     "#spring",
     {
-      rotateX: -60,
+      scaleY: -1,
+      transformOrigin: "50% 50%",
+      duration: 3,
       repeat: -1,
-      yoyo: true,
       ease: "none",
     },
     "<"
