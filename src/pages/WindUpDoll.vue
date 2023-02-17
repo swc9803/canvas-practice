@@ -2,6 +2,8 @@
   <div class="container">
     <div class="screen">
       <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
+      <div ref="mountainRef" class="mountain" />
+      <div ref="treeRef" class="tree" />
       <svg class="toy" viewBox="0 0 150 317">
         <g id="Frame 5" clip-path="url(#clip0_12_2)">
           <g ref="leg1Ref">
@@ -267,6 +269,8 @@ const armRef = ref();
 const leg1Ref = ref();
 const leg2Ref = ref();
 const spinRef = ref();
+const mountainRef = ref();
+const treeRef = ref();
 
 let draggableTrigger;
 let dragAnimation;
@@ -275,6 +279,7 @@ const rotationValue = ref(0); // let으로 바꾸기
 
 const walkingAni = gsap.timeline({ paused: true });
 const velocityAni = gsap.timeline({ paused: true });
+const movingAni = gsap.timeline({ paused: true });
 
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
@@ -300,6 +305,7 @@ function animate() {
   }
   // timeScale이 0이면 오류 발생
   walkingAni.timeScale(rotationValue.value / 150);
+  movingAni.timeScale(rotationValue.value / 150);
   dragAnimation = requestAnimationFrame(animate);
 }
 
@@ -371,7 +377,16 @@ onMounted(() => {
     },
     "<"
   );
+
+  movingAni.to(treeRef.value, {
+    left: "-90px",
+    duration: 10,
+    repeat: -1,
+    ease: "none",
+  });
+
   walkingAni.play();
+  movingAni.play();
 });
 
 onBeforeUnmount(() => {
@@ -396,11 +411,20 @@ onBeforeUnmount(() => {
       opacity: 0;
       transform-origin: 100%;
     }
-    .toy {
-      position: relative;
+    .tree {
+      position: absolute;
       top: 20%;
+      left: 80%;
+      width: 10%;
+      height: 10%;
+      background: green;
+      border-radius: 50%;
+    }
+    .toy {
+      position: absolute;
+      top: 10%;
       left: 5%;
-      height: 60%;
+      height: 40%;
     }
   }
   .footer {
@@ -421,12 +445,12 @@ onBeforeUnmount(() => {
       position: relative;
       //   width: 100%;
       height: 100%;
+      background: #cc3333;
       .drag {
         position: absolute;
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background: #cc3333;
       }
       .rotate {
         position: relative;
@@ -441,10 +465,12 @@ onBeforeUnmount(() => {
       display: flex;
       justify-content: center;
       align-items: center;
-      //   width: calc(100% / 3);
       height: 100%;
       text-align: center;
       font-size: 1.5em;
+      font-weight: 600;
+      background: black;
+      color: white;
       @media (width <= 768px) {
         & {
           display: none;
