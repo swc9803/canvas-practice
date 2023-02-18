@@ -24,6 +24,7 @@ import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
 import Textparticle from "../pages/TextParticle.vue";
+import Perspective from "../pages/Perspective.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -151,6 +152,11 @@ const routes = [
     path: "/textparticle",
     name: "textparticle",
     component: Textparticle,
+  },
+  {
+    path: "/perspective",
+    name: "perspective",
+    component: Perspective,
   },
   {
     path: "/test",

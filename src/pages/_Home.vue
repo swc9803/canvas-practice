@@ -34,6 +34,7 @@ const routes = [
   { name: "doll" },
   { name: "scrollplay" },
   { name: "textparticle" },
+  { name: "perspective" },
   { name: "test" },
 ];
 </script>

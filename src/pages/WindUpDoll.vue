@@ -2,6 +2,8 @@
   <div class="container">
     <div class="screen">
       <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
+      <div class="sun" />
+      <div class="moon" />
       <div ref="mountainRef" class="mountain" />
       <div ref="treeRef" class="tree" />
       <svg class="toy" viewBox="0 0 150 317">
@@ -410,6 +412,20 @@ onBeforeUnmount(() => {
       background: rgba(255, 255, 255, 0.9);
       opacity: 0;
       transform-origin: 100%;
+    }
+    .sun {
+      position: absolute;
+      width: 10vw;
+      height: 10vw;
+      background: orange;
+      border-radius: 100px;
+    }
+    .moon {
+      position: absolute;
+      width: 10vw;
+      height: 10vw;
+      box-shadow: inset 20px -20px #eccc68;
+      border-radius: 50%;
     }
     .tree {
       position: absolute;
