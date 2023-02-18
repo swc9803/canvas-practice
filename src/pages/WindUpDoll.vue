@@ -1,9 +1,11 @@
 <template>
-  <div class="container">
+  <div ref="containerRef" class="container">
     <div class="screen">
       <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
-      <div class="sun" />
-      <div class="moon" />
+      <div ref="celestialBodyRef" class="celestialBody">
+        <div class="sun" />
+        <div ref="moonRef" class="moon" />
+      </div>
       <div ref="mountainRef" class="mountain" />
       <div ref="treeRef" class="tree" />
       <svg class="toy" viewBox="0 0 150 317">
@@ -263,10 +265,13 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
+const containerRef = ref();
 const handRef = ref();
 const springRef = ref();
 const rotateRef = ref();
 const velocityRef = ref();
+const celestialBodyRef = ref();
+const moonRef = ref();
 const armRef = ref();
 const leg1Ref = ref();
 const leg2Ref = ref();
@@ -279,8 +284,9 @@ let dragAnimation;
 let newRotation;
 const rotationValue = ref(0); // let으로 바꾸기
 
-const walkingAni = gsap.timeline({ paused: true });
 const velocityAni = gsap.timeline({ paused: true });
+const celestialBodyAni = gsap.timeline({ paused: true });
+const walkingAni = gsap.timeline({ paused: true });
 const movingAni = gsap.timeline({ paused: true });
 
 function animate() {
@@ -306,8 +312,9 @@ function animate() {
     });
   }
   // timeScale이 0이면 오류 발생
-  walkingAni.timeScale(rotationValue.value / 150);
-  movingAni.timeScale(rotationValue.value / 150);
+  celestialBodyAni.timeScale(rotationValue.value * 0.001);
+  walkingAni.timeScale(rotationValue.value * 0.005);
+  movingAni.timeScale(rotationValue.value * 0.005);
   dragAnimation = requestAnimationFrame(animate);
 }
 
@@ -327,7 +334,7 @@ onMounted(() => {
 
   // velocity
   gsap.set(velocityRef.value, {
-    top: "random(3, 60)%",
+    top: "random(3, 100)%",
     left: "random(60, 160)%",
   });
   velocityAni.to(velocityRef.value, {
@@ -339,6 +346,35 @@ onMounted(() => {
     stagger: 0.3,
     repeat: -1,
   });
+
+  // sun, moon
+  celestialBodyAni.to(containerRef.value, {
+    background: "#699e13",
+    yoyo: true,
+    repeat: -1,
+    duration: 2.5,
+    ease: "none",
+  });
+  celestialBodyAni.to(
+    celestialBodyRef.value,
+    {
+      rotate: "-=360",
+      duration: 5,
+      repeat: -1,
+      ease: "none",
+    },
+    "<"
+  );
+  celestialBodyAni.to(
+    moonRef.value,
+    {
+      rotate: "+=360",
+      duration: 5,
+      repeat: -1,
+      ease: "none",
+    },
+    "<"
+  );
 
   walkingAni.to(leg1Ref.value, {
     rotate: 60,
@@ -387,6 +423,7 @@ onMounted(() => {
     ease: "none",
   });
 
+  celestialBodyAni.play();
   walkingAni.play();
   movingAni.play();
 });
@@ -401,10 +438,12 @@ onBeforeUnmount(() => {
 .container {
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: rgb(125, 185, 27);
+  background: #162005;
   overflow: hidden;
   .screen {
+    position: relative;
     height: calc(var(--vh) * 60);
+    overflow: hidden;
     .velocity {
       position: absolute;
       width: 30px;
@@ -413,19 +452,31 @@ onBeforeUnmount(() => {
       opacity: 0;
       transform-origin: 100%;
     }
-    .sun {
+    .celestialBody {
       position: absolute;
-      width: 10vw;
-      height: 10vw;
-      background: orange;
-      border-radius: 100px;
-    }
-    .moon {
-      position: absolute;
-      width: 10vw;
-      height: 10vw;
-      box-shadow: inset 20px -20px #eccc68;
-      border-radius: 50%;
+      transform: rotate(90deg);
+      width: 100%;
+      height: 100%;
+      .sun {
+        position: absolute;
+        top: 50%;
+        left: 95%;
+        transform: translate3d(-95%, -50%, 0);
+        width: 10vh;
+        height: 10vh;
+        background: #ecd929;
+        border-radius: 50%;
+      }
+      .moon {
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        transform: translate3d(-5%, -50%, 0) rotate(180deg);
+        width: 10vh;
+        height: 10vh;
+        box-shadow: inset 1.5em -1.5em #e7c738;
+        border-radius: 50%;
+      }
     }
     .tree {
       position: absolute;
@@ -438,9 +489,10 @@ onBeforeUnmount(() => {
     }
     .toy {
       position: absolute;
-      top: 10%;
+      top: 50%;
       left: 5%;
-      height: 40%;
+      transform: translate(-5%, -50%);
+      height: 70%;
     }
   }
   .footer {
