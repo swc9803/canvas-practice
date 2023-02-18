@@ -7,13 +7,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import * as PIXI from "pixi.js";
-PIXI.utils.skipHello();
+PIXI.settings.RENDER_OPTIONS.hello;
+
 let displacementFilter;
 const canvasRef = ref();
-// const img = new PIXI.Sprite.from("/train.jpg");
-// const depthMap = new PIXI.Sprite.from("/train-map.png");
 const img = PIXI.Sprite.from(require("@/assets/origin.png"));
 const depthMap = PIXI.Sprite.from(require("@/assets/depthMap.png"));
+
 const draw = (app) => {
   app.stage.addChild(img);
   app.stage.addChild(depthMap);
@@ -22,21 +22,25 @@ const draw = (app) => {
   onResize();
   window.addEventListener("resize", onResize);
 };
+
 const mapMove = (e) => {
   displacementFilter.scale.x =
     (canvasRef.value.offsetWidth / 2 - e.clientX) / 70;
   displacementFilter.scale.y =
     (canvasRef.value.offsetHeight / 2 - e.clientY) / 70;
 };
+
 function onResize() {
-  img.width = canvasRef.value.offsetWidth / 2;
-  img.height = canvasRef.value.offsetWidth * (3 / 4);
+  img.width = canvasRef.value.offsetWidth;
+  img.height = canvasRef.value.offsetHeight;
   img.position.y = (canvasRef.value.offsetHeight - img.height) / 2;
   depthMap.position.y = (canvasRef.value.offsetHeight - img.height) / 2;
-
   depthMap.width = img.width;
   depthMap.height = img.height;
+  displacementFilter.scale.x = 0;
+  displacementFilter.scale.y = 0;
 }
+
 onMounted(() => {
   const app = new PIXI.Application({
     width: canvasRef.value.offsetWidth,
@@ -53,10 +57,10 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 128px);
   overflow: hidden;
   canvas {
-    width: 100%;
+    width: calc(75vh - 96px);
     height: 100%;
   }
 }
