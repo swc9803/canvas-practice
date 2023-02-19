@@ -1,13 +1,28 @@
 <template>
-  <div ref="containerRef" class="container">
+  <div class="container">
+    <div ref="filterRef" class="filter" />
     <div class="screen">
       <div ref="velocityRef" class="velocity" v-for="wind in 15" :key="wind" />
-      <div ref="celestialBodyRef" class="celestialBody">
-        <div class="sun" />
-        <div ref="moonRef" class="moon" />
+      <div class="overflow">
+        <div ref="celestialBodyRef" class="celestialBody">
+          <div class="sun" />
+          <div ref="moonRef" class="moon" />
+        </div>
       </div>
+      <div v-for="star in 8" :key="star.id" :ref="starRef" class="star" />
+      <div ref="cloudRef" class="cloud" />
       <div ref="mountainRef" class="mountain" />
-      <div ref="treeRef" class="tree" />
+      <!-- tree -->
+      <svg
+        v-for="tree in 3"
+        :key="tree.id"
+        ref="treeRef"
+        class="tree"
+        viewBox="0 0 110 225"
+      >
+        <path fill="#A84C18" d="M31 78h48v147H31z" />
+        <circle cx="55" cy="55" r="55" fill="#4AA512" />
+      </svg>
       <svg class="toy" viewBox="0 0 150 317">
         <g id="Frame 5" clip-path="url(#clip0_12_2)">
           <g ref="leg1Ref">
@@ -265,10 +280,10 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
-const containerRef = ref();
 const handRef = ref();
 const springRef = ref();
 const rotateRef = ref();
+const filterRef = ref();
 const velocityRef = ref();
 const celestialBodyRef = ref();
 const moonRef = ref();
@@ -277,7 +292,10 @@ const leg1Ref = ref();
 const leg2Ref = ref();
 const spinRef = ref();
 const mountainRef = ref();
+const cloudRef = ref();
 const treeRef = ref();
+const starArray = ref([]);
+const starRef = (el) => starArray.value.push(el);
 
 let draggableTrigger;
 let dragAnimation;
@@ -288,6 +306,7 @@ const velocityAni = gsap.timeline({ paused: true });
 const celestialBodyAni = gsap.timeline({ paused: true });
 const walkingAni = gsap.timeline({ paused: true });
 const movingAni = gsap.timeline({ paused: true });
+const starAni = gsap.timeline({ paused: true });
 
 function animate() {
   handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
@@ -311,10 +330,12 @@ function animate() {
       },
     });
   }
+
   // timeScale이 0이면 오류 발생
   celestialBodyAni.timeScale(rotationValue.value * 0.001);
   walkingAni.timeScale(rotationValue.value * 0.005);
   movingAni.timeScale(rotationValue.value * 0.005);
+  starAni.timeScale(rotationValue.value * 0.001);
   dragAnimation = requestAnimationFrame(animate);
 }
 
@@ -347,9 +368,18 @@ onMounted(() => {
     repeat: -1,
   });
 
+  // star
+  gsap.to(starArray.value, {
+    scale: 0,
+    transformOrigin: "50% 50%",
+    duration: 1,
+    yoyo: true,
+    repeat: -1,
+    ease: "none",
+  });
   // sun, moon
-  celestialBodyAni.to(containerRef.value, {
-    background: "#699e13",
+  celestialBodyAni.to(filterRef.value, {
+    opacity: 0,
     yoyo: true,
     repeat: -1,
     duration: 2.5,
@@ -417,15 +447,49 @@ onMounted(() => {
   );
 
   movingAni.to(treeRef.value, {
-    left: "-90px",
+    left: "-=200%",
     duration: 10,
     repeat: -1,
     ease: "none",
   });
+  movingAni.to(
+    mountainRef.value,
+    {
+      left: "-90px",
+      duration: 40,
+      repeat: -1,
+      ease: "none",
+    },
+    "<"
+  );
+  movingAni.to(
+    cloudRef.value,
+    {
+      left: "-90px",
+      duration: 30,
+      repeat: -1,
+      ease: "none",
+    },
+    "<"
+  );
+
+  starAni.to(starArray.value, {
+    opacity: 0,
+    yoyo: true,
+    repeat: -1,
+    duration: 2.5,
+  });
+  for (var i = 0; i < 8; i++) {
+    gsap.set(starArray.value[i], {
+      top: "random(0, 30)%",
+      left: "random(0, 100)%",
+    });
+  }
 
   celestialBodyAni.play();
   walkingAni.play();
   movingAni.play();
+  starAni.play();
 });
 
 onBeforeUnmount(() => {
@@ -438,8 +502,17 @@ onBeforeUnmount(() => {
 .container {
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: #162005;
+  background: #94c93a;
   overflow: hidden;
+  .filter {
+    position: absolute;
+    width: 100%;
+    height: calc(var(--vh) * 60);
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+    pointer-events: none;
+    z-index: 1;
+  }
   .screen {
     position: relative;
     height: calc(var(--vh) * 60);
@@ -451,41 +524,96 @@ onBeforeUnmount(() => {
       background: rgba(255, 255, 255, 0.9);
       opacity: 0;
       transform-origin: 100%;
+      z-index: 2;
     }
-    .celestialBody {
+    .overflow {
       position: absolute;
-      transform: rotate(90deg);
       width: 100%;
-      height: 100%;
-      .sun {
+      height: 40%;
+      background: #2f80dd;
+      overflow: hidden;
+      .celestialBody {
         position: absolute;
         top: 50%;
-        left: 95%;
-        transform: translate3d(-95%, -50%, 0);
-        width: 10vh;
-        height: 10vh;
-        background: #ecd929;
-        border-radius: 50%;
+        transform: rotate(90deg);
+        width: 100%;
+        height: 100%;
+        .sun {
+          position: absolute;
+          bottom: 0;
+          left: 75%;
+          transform: translate3d(-75%, -50%, 0);
+          width: 10vh;
+          height: 10vh;
+          background: #ecd929;
+          border-radius: 50%;
+        }
+        .moon {
+          position: absolute;
+          bottom: 0;
+          left: 25%;
+          transform: translate3d(-25%, -50%, 0) rotate(180deg);
+          width: 10vh;
+          height: 10vh;
+          box-shadow: inset 1.5em -1.5em #e7c738;
+          border-radius: 50%;
+        }
       }
-      .moon {
+    }
+    .star {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      z-index: 1;
+      &::before,
+      &::after {
+        content: "";
         position: absolute;
-        top: 50%;
-        left: 5%;
-        transform: translate3d(-5%, -50%, 0) rotate(180deg);
-        width: 10vh;
-        height: 10vh;
-        box-shadow: inset 1.5em -1.5em #e7c738;
-        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 60%;
+        background-color: #fff89b;
+        transform: rotate(45deg);
       }
+
+      &::after {
+        transform: rotate(90deg);
+      }
+    }
+
+    .cloud {
+      position: absolute;
+      top: 5%;
+      left: 100%;
+      width: 15vh;
+      height: 10vh;
+      background: #fff;
+      border-radius: 10em;
+    }
+    .mountain {
+      position: absolute;
+      top: 8%;
+      left: 100%;
+      border-bottom: 20vh solid rgb(175, 229, 168);
+      border-right: 20vh solid transparent;
+      border-left: 20vh solid transparent;
     }
     .tree {
       position: absolute;
-      top: 20%;
-      left: 80%;
-      width: 10%;
-      height: 10%;
-      background: green;
-      border-radius: 50%;
+      height: 50%;
+      &:nth-of-type(1) {
+        top: 20%;
+        left: 110%;
+      }
+      &:nth-of-type(2) {
+        top: 18%;
+        left: 160%;
+      }
+      &:nth-of-type(3) {
+        top: 20%;
+        left: 180%;
+      }
     }
     .toy {
       position: absolute;
