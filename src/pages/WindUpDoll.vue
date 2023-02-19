@@ -202,6 +202,7 @@
       </div>
       <!-- 태엽 -->
       <div class="spring">
+        <p v-if="!clicked" ref="alertRef">Spin this!</p>
         <div ref="springRef" class="drag" />
         <svg
           class="rotate"
@@ -280,6 +281,8 @@ import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
 
+const clicked = ref(false);
+const alertRef = ref();
 const handRef = ref();
 const springRef = ref();
 const rotateRef = ref();
@@ -300,8 +303,9 @@ const starRef = (el) => starArray.value.push(el);
 let draggableTrigger;
 let dragAnimation;
 let newRotation;
-const rotationValue = ref(0); // let으로 바꾸기
+let rotationValue = 0;
 
+const alertAni = gsap.timeline();
 const velocityAni = gsap.timeline({ paused: true });
 const celestialBodyAni = gsap.timeline({ paused: true });
 const walkingAni = gsap.timeline({ paused: true });
@@ -309,18 +313,18 @@ const movingAni = gsap.timeline({ paused: true });
 const starAni = gsap.timeline({ paused: true });
 
 function animate() {
-  handRef.value.style.transform = `rotate(${rotationValue.value}deg)`;
-  rotateRef.value.style.transform = `rotate(${rotationValue.value * 7.5}deg)`;
-  if (rotationValue.value > 20) {
-    rotationValue.value *= 0.9995;
-  } else if (rotationValue.value > 0.01) {
-    rotationValue.value -= 0.01;
-  } else if (rotationValue.value <= 0) {
-    rotationValue.value = 0.01;
+  handRef.value.style.transform = `rotate(${rotationValue}deg)`;
+  rotateRef.value.style.transform = `rotate(${rotationValue * 7.5}deg)`;
+  if (rotationValue > 20) {
+    rotationValue *= 0.9995;
+  } else if (rotationValue > 0.01) {
+    rotationValue -= 0.01;
+  } else if (rotationValue <= 0) {
+    rotationValue = 0.01;
   }
-  if (rotationValue.value > 180) {
+  if (rotationValue > 180) {
     velocityAni.resume();
-  } else if (rotationValue.value <= 180 && rotationValue.value >= 130) {
+  } else if (rotationValue <= 180 && rotationValue >= 130) {
     gsap.to(velocityRef.value, {
       opacity: 0,
       duration: 1,
@@ -332,10 +336,10 @@ function animate() {
   }
 
   // timeScale이 0이면 오류 발생
-  celestialBodyAni.timeScale(rotationValue.value * 0.001);
-  walkingAni.timeScale(rotationValue.value * 0.005);
-  movingAni.timeScale(rotationValue.value * 0.005);
-  starAni.timeScale(rotationValue.value * 0.001);
+  celestialBodyAni.timeScale(rotationValue * 0.001);
+  walkingAni.timeScale(rotationValue * 0.005);
+  movingAni.timeScale(rotationValue * 0.005);
+  starAni.timeScale(rotationValue * 0.001);
   dragAnimation = requestAnimationFrame(animate);
 }
 
@@ -344,13 +348,23 @@ onMounted(() => {
   draggableTrigger = Draggable.create(springRef.value, {
     type: "rotation",
     onDrag: function () {
-      if (this.rotation >= newRotation && rotationValue.value <= 240) {
-        rotationValue.value += 0.4;
-      } else if (rotationValue.value != 0) {
-        rotationValue.value -= 0.4;
+      clicked.value = true;
+      if (this.rotation >= newRotation && rotationValue <= 240) {
+        rotationValue += 0.4;
+      } else if (rotationValue != 0) {
+        rotationValue -= 0.4;
       }
       newRotation = this.rotation;
     },
+  });
+
+  // alert
+  alertAni.to(alertRef.value, {
+    opacity: 0,
+    scale: 1.5,
+    repeat: -1,
+    duration: 2,
+    ease: "none",
   });
 
   // velocity
@@ -629,19 +643,50 @@ onBeforeUnmount(() => {
     align-items: center;
     width: 100%;
     height: calc(var(--vh) * 40);
-    background: rgb(255, 255, 255);
+    background: rgb(71, 56, 56);
     .speedWrapper {
       height: 100%;
+      @media (width <= 768px) {
+        & {
+          width: 100%;
+        }
+      }
       .speed {
         height: 100%;
-        background: gray;
+        @media (width <= 768px) {
+          & {
+            width: 100%;
+          }
+        }
       }
     }
     .spring {
       position: relative;
-      //   width: 100%;
       height: 100%;
       background: #cc3333;
+      @media (width <= 768px) {
+        & {
+          width: 100%;
+          height: auto;
+        }
+      }
+      p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5em;
+        font-weight: 700;
+        color: white;
+        -webkit-text-stroke: 1px black;
+        pointer-events: none;
+        z-index: 1;
+        @media (width <= 768px) {
+          & {
+            font-size: 3em;
+          }
+        }
+      }
       .drag {
         position: absolute;
         width: 100%;
@@ -665,7 +710,6 @@ onBeforeUnmount(() => {
       text-align: center;
       font-size: 1.5em;
       font-weight: 600;
-      background: black;
       color: white;
       @media (width <= 768px) {
         & {
