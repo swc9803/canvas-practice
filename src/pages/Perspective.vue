@@ -1,14 +1,15 @@
 <template>
   <div class="container">
-    <canvas ref="canvasRef" @mousemove="mapMove" />
+    <canvas ref="canvasRef" @mousemove="onMouseMove" @touchmove="onTouchMove" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import * as PIXI from "pixi.js";
 PIXI.settings.RENDER_OPTIONS.hello;
 
+let app;
 let displacementFilter;
 const canvasRef = ref();
 const img = PIXI.Sprite.from(require("@/assets/origin.png"));
@@ -23,11 +24,21 @@ const draw = (app) => {
   window.addEventListener("resize", onResize);
 };
 
-const mapMove = (e) => {
+const onMouseMove = (e) => {
   displacementFilter.scale.x =
-    (canvasRef.value.offsetWidth / 2 - e.clientX) / 70;
+    (canvasRef.value.offsetWidth / 2 -
+      (e.pageX - (window.innerWidth - img.width) / 2)) /
+    100;
   displacementFilter.scale.y =
-    (canvasRef.value.offsetHeight / 2 - e.clientY) / 70;
+    (canvasRef.value.offsetHeight / 2 - (e.pageY - 64)) / 100;
+};
+
+const onTouchMove = (e) => {
+  displacementFilter.scale.x =
+    (canvasRef.value.offsetWidth / 2 - e.touches[0].pageX) / 70;
+  displacementFilter.scale.y =
+    (canvasRef.value.offsetHeight / 2 - e.touches[0].pageY) / 70;
+  e.preventDefault();
 };
 
 function onResize() {
@@ -42,7 +53,7 @@ function onResize() {
 }
 
 onMounted(() => {
-  const app = new PIXI.Application({
+  app = new PIXI.Application({
     width: canvasRef.value.offsetWidth,
     height: canvasRef.value.offsetHeight,
     view: canvasRef.value,
@@ -52,6 +63,12 @@ onMounted(() => {
   });
   draw(app);
 });
+
+onBeforeUnmount(() => {
+  app.ticker.stop();
+  app.renderer.destroy();
+  window.removeEventListener("resize", onResize);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -60,6 +77,9 @@ onMounted(() => {
   height: calc(100vh - 128px);
   overflow: hidden;
   canvas {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
     width: calc(75vh - 96px);
     height: 100%;
   }
