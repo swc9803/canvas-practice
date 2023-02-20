@@ -237,6 +237,7 @@ function reSelection() {
   mixer.clipAction(model1.animations[0]).stop();
   mixer.clipAction(model2.animations[0]).stop();
   mixer.clipAction(model3.animations[0]).stop();
+  mixer.clipAction(model3.animations[2]).stop();
   gsap.to(camera.position, {
     x: 0,
     y: 0.5,
