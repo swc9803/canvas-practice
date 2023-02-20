@@ -163,7 +163,6 @@ function onClick(e) {
     if (object.name === "model1") {
       cancelAnimationFrame(lightRaf);
       message.value = "The winner is Druid!";
-      clicked.value = true;
       mixer = new THREE.AnimationMixer(model1.scene);
       mixer.clipAction(model1.animations[0]).play();
       gsap.to(camera.position, {
@@ -179,11 +178,13 @@ function onClick(e) {
       gsap.to(light2.target.position, {
         x: -1,
         duration: 1,
+        onComplete: () => {
+          clicked.value = true;
+        },
       });
     } else if (object.name === "model2") {
       cancelAnimationFrame(lightRaf);
       message.value = "The winner is Korrigan Hat!";
-      clicked.value = true;
       mixer = new THREE.AnimationMixer(model2.scene);
       mixer.clipAction(model2.animations[0]).play();
       gsap.to(camera.position, {
@@ -199,10 +200,12 @@ function onClick(e) {
       gsap.to(light2.target.position, {
         x: 0,
         duration: 1,
+        onComplete: () => {
+          clicked.value = true;
+        },
       });
     } else if (object.name === "model3") {
       message.value = "The winner is Korrigan Wolf!";
-      clicked.value = true;
       mixer = new THREE.AnimationMixer(model3.scene);
       mixer.clipAction(model3.animations[0]).play();
       mixer.clipAction(model3.animations[2]).play();
@@ -219,6 +222,9 @@ function onClick(e) {
       gsap.to(light2.target.position, {
         x: 1,
         duration: 1,
+        onComplete: () => {
+          clicked.value = true;
+        },
       });
       cancelAnimationFrame(lightRaf);
     }
