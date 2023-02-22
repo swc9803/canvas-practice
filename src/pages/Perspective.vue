@@ -35,7 +35,9 @@ const onMouseMove = (e) => {
 
 const onTouchMove = (e) => {
   displacementFilter.scale.x =
-    (canvasRef.value.offsetWidth / 2 - e.touches[0].pageX) / 70;
+    (canvasRef.value.offsetWidth / 2 -
+      (e.touches[0].pageX - (window.innerWidth - img.width) / 2)) /
+    70;
   displacementFilter.scale.y =
     (canvasRef.value.offsetHeight / 2 - e.touches[0].pageY) / 70;
   e.preventDefault();

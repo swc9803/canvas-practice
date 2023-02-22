@@ -291,6 +291,36 @@ onMounted(() => {
 onBeforeUnmount(() => {
   cancelAnimationFrame(raf);
   cancelAnimationFrame(lightRaf);
+  renderer.dispose();
+  renderer.shadowMap.enabled = false;
+  light1.castShadow = false;
+  light2.castShadow = false;
+
+  scene.remove(plane);
+  plane.geometry.dispose();
+  plane.material.dispose();
+  scene.remove(floor);
+  floor.geometry.dispose();
+  floor.material.dispose();
+
+  model1.scene.traverse(function (node) {
+    if (node.isMesh) {
+      node.geometry.dispose();
+      node.material.dispose();
+    }
+  });
+  model2.scene.traverse(function (node) {
+    if (node.isMesh) {
+      node.geometry.dispose();
+      node.material.dispose();
+    }
+  });
+  model3.scene.traverse(function (node) {
+    if (node.isMesh) {
+      node.geometry.dispose();
+      node.material.dispose();
+    }
+  });
   window.removeEventListener("resize", onResize);
 });
 </script>
