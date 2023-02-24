@@ -39,11 +39,15 @@ const onMouseMove = (e) => {
   const imgY = mouse.y / window.innerHeight;
   temp.value = Math.max(Math.abs(imgX), Math.abs(imgY));
 
-  temp.value = Math.round(temp.value * 100) * 2;
+  temp.value = Math.round(temp.value * 100) * 0.02;
 };
 
 watch(temp, () => {
-  wordAni.progress(temp.value / 100);
+  if (temp.value > 0.01) {
+    wordAni.progress(temp.value);
+  } else {
+    wordAni.progress(0);
+  }
 });
 
 onMounted(() => {
