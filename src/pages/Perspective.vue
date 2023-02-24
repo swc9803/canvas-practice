@@ -67,8 +67,10 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  app.ticker.stop();
-  app.renderer.destroy();
+  app.stage.filters = null;
+  displacementFilter.destroy();
+  depthMap.destroy();
+  img.destroy();
   window.removeEventListener("resize", onResize);
 });
 </script>
