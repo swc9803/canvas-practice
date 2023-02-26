@@ -5,7 +5,7 @@
     @mousemove="onMouseMove"
     @touchmove.prevent="onTouchMove"
   >
-    <!-- 침대 -->
+    <img class="bed" src="@/assets/bed.png" />
     <svg
       ref="wordRef"
       class="word"
@@ -101,6 +101,13 @@ onMounted(() => {
   width: 100%;
   height: calc(var(--vh) * 100);
   background: rgb(22, 22, 22);
+  .bed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+  }
   .word {
     position: relative;
     top: 50%;
