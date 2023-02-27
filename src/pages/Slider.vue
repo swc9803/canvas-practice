@@ -54,9 +54,17 @@ let cardGap = 520;
 let startProgress;
 let draggableTrigger;
 let spin;
+let progressLimit = gsap.utils.wrap(0, 1);
 
 const onResize = () => {
   cardGap = Math.min(window.innerWidth / 1.8, 520);
+
+  if (spin) {
+    gsap.killTweensOf(spin);
+    spin.timeScale(0);
+    startProgress = spin.progress();
+  }
+
   spin = gsap.fromTo(
     cardArray.value,
     {
@@ -70,12 +78,6 @@ const onResize = () => {
       repeat: -1,
     }
   );
-};
-
-onMounted(() => {
-  onResize();
-
-  let progressLimit = gsap.utils.wrap(0, 1);
   draggableTrigger = Draggable.create(dragElRef.value, {
     trigger: wrapperRef.value,
     allowNativeTouchScrolling: true,
@@ -94,7 +96,10 @@ onMounted(() => {
       }
     },
   });
+};
 
+onMounted(() => {
+  onResize();
   window.addEventListener("resize", onResize);
 });
 
@@ -122,13 +127,14 @@ onBeforeUnmount(() => {
     // background: white;
     .card {
       position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
       width: 25vh;
       height: 60vh;
-      margin: 10px 20px 50px 235px;
       border: 2px solid #00fff3;
       color: #00fff2;
-      //   background: transparent;
-      background: red;
+      background: transparent;
+      //   background: red;
       overflow: hidden;
       &:hover {
         cursor: pointer;
