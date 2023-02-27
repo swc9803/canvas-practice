@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <div ref="wrapperRef" class="wrapper">
+      <div ref="dragElRef" />
       <div v-for="card in cards" :key="card.id" :ref="cardRef" class="card">
-        <div>
-          text in 3d
-          <small><br />text in 3d</small>
-          <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
-        </div>
+        <p>text in 3d</p>
+        <small><br />text in 3d</small>
+        <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
       </div>
     </div>
   </div>
@@ -45,19 +44,20 @@ const cards = [
   },
 ];
 
+const dragElRef = ref();
 const wrapperRef = ref();
 const cardArray = ref([]);
 const cardRef = (el) => cardArray.value.push(el);
 
-const proxy = document.createElement("div");
-const dragAmount = 3000;
-const cardGap = 520;
+const dragAmount = -3000;
+let cardGap = 520;
 let startProgress;
 let draggableTrigger;
+let spin;
 
-onMounted(() => {
-  let progressLimit = gsap.utils.wrap(0, 1);
-  const spin = gsap.fromTo(
+const onResize = () => {
+  cardGap = Math.min(window.innerWidth / 1.8, 520);
+  spin = gsap.fromTo(
     cardArray.value,
     {
       rotationY: (i) => (i * 360) / cardArray.value.length,
@@ -70,7 +70,13 @@ onMounted(() => {
       repeat: -1,
     }
   );
-  draggableTrigger = Draggable.create(proxy, {
+};
+
+onMounted(() => {
+  onResize();
+
+  let progressLimit = gsap.utils.wrap(0, 1);
+  draggableTrigger = Draggable.create(dragElRef.value, {
     trigger: wrapperRef.value,
     allowNativeTouchScrolling: true,
     onPress() {
@@ -88,42 +94,46 @@ onMounted(() => {
       }
     },
   });
+
+  window.addEventListener("resize", onResize);
 });
 
 onBeforeUnmount(() => {
   draggableTrigger.forEach((trigger) => trigger.kill());
+  window.removeEventListener("resize", onResize);
 });
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: 100%;
+  max-width: 1920px;
   height: calc(var(--vh) * 100);
-  background: black;
+  background: rgb(129, 129, 129);
   overflow: hidden;
   .wrapper {
     position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
     width: 680px;
     height: 400px;
-    -webkit-font-smoothing: antialiased;
-    perspective: 1100px;
-    // background: white;
     transform-style: preserve-3d;
-  }
-  .card {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    display: inline-block;
-    margin: 10px 20px 50px 235px;
-    overflow: hidden;
-    border: 1px solid #00fff3;
-    color: #00fff2;
-    background: transparent;
-    height: 600px;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 4px 8px 0 #00fff3, 0 6px 20px 0 #00fff3;
+    perspective: 1200px;
+    // background: white;
+    .card {
+      position: absolute;
+      width: 25vh;
+      height: 60vh;
+      margin: 10px 20px 50px 235px;
+      border: 2px solid #00fff3;
+      color: #00fff2;
+      //   background: transparent;
+      background: red;
+      overflow: hidden;
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 8px 0 #00fff3, 0 6px 20px 0 #00fff3;
+      }
     }
   }
 }
