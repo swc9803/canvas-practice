@@ -1,17 +1,15 @@
 <template>
   <div class="container">
-    <div class="cloud"></div>
-    <svg ref="pathRef" class="path" viewBox="0 0 405 141">
-      <path
-        id="path"
-        stroke="#000"
-        d="M404.5 70.5c0 9.5244-5.543 18.6699-15.731 27.0557-10.185 8.3833-24.952 15.9543-43.244 22.3233-36.58 12.735-87.147 20.621-143.025 20.621s-106.445-7.886-143.0247-20.621c-18.2922-6.369-33.0596-13.94-43.2441-22.3233C6.04329 89.1699.5 80.0244.5 70.5s5.54329-18.6699 15.7312-27.0557c10.1845-8.383 24.9519-15.9547 43.2441-22.3231C96.055 8.38602 146.622.5 202.5.5s106.445 7.88602 143.025 20.6212c18.292 6.3684 33.059 13.9401 43.244 22.3231C398.957 51.8301 404.5 60.9756 404.5 70.5Z"
-      />
-    </svg>
-
-    <div class="wrapper">
-      <div class="sun"></div>
-      <div class="moon"></div>
+    <div ref="wrapperRef" class="wrapper">
+      <div v-for="card in cards" :key="card.id" :ref="cardRef" class="card">
+        <div>
+          text in 3d
+          <small><br />text in 3d</small>
+          <router-link :to="`/${card.path}`">
+            <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,84 +17,132 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import gsap from "gsap";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-gsap.registerPlugin(MotionPathPlugin);
+import { Draggable } from "gsap/Draggable";
+gsap.registerPlugin(Draggable);
 
-const pathRef = ref();
+const cards = [
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+  {
+    src: "",
+    alt: "test",
+    path: "",
+  },
+];
 
-const animate = () => {
-  gsap.to(".moon", {
-    motionPath: {
-      path: "#path",
-      align: "#path",
-      autoRotate: true,
-      alignOrigin: [0.5, 0.5],
-    },
-    duration: 10,
-    repeat: -1,
-    ease: "none",
-  });
-  gsap.to(".moon", {
-    // rotate: -360,
-    duration: 5,
-    repeat: -1,
-    ease: "none",
-  });
-};
+const wrapperRef = ref();
+const cardArray = ref([]);
+const cardRef = (el) => cardArray.value.push(el);
+
+const dragDistancePerRotation = 3000;
+const radius = 520;
+let startProgress;
 
 onMounted(() => {
-  animate();
+  let proxy = document.createElement("div"); // just a dummy element that'll get dragged, but we don't care about it.
+  let progressWrap = gsap.utils.wrap(0, 1);
+  const spin = gsap.fromTo(
+    cardArray.value,
+    {
+      rotationY: (i) => (i * 360) / cardArray.value.length,
+    },
+    {
+      rotationY: "-=360",
+      transformOrigin: `50% 50% ${-radius}px`,
+      duration: 20,
+      ease: "none",
+      repeat: -1,
+    }
+  );
+  Draggable.create(proxy, {
+    trigger: wrapperRef.value, // activate the dragging when the user presses on the .wrapper
+    type: "x", // we only care about movement on the x-axis.
+    inertia: true,
+    allowNativeTouchScrolling: true,
+    onPress() {
+      gsap.killTweensOf(spin); // if it's in the middle of animating the spin back to timeScale: 1, kill that.
+      spin.timeScale(0); // stop the spin.
+      startProgress = spin.progress(); // remember the current progress value because we'll make the drag relative to that.
+    },
+    onDrag: updateRotation,
+    onThrowUpdate: updateRotation,
+    onRelease() {
+      if (!this.tween || !this.tween.isActive()) {
+        // if the user clicked and released (no inertia flick), resume the spin
+        gsap.to(spin, { timeScale: 1, duration: 1 });
+      }
+    },
+    onThrowComplete() {
+      // resume the spin after the inertia tween finishes
+      gsap.to(spin, { timeScale: 1, duration: 1 });
+    },
+  });
+
+  function updateRotation() {
+    let p = startProgress + (this.startX - this.x) / dragDistancePerRotation;
+    spin.progress(progressWrap(p));
+  }
 });
 </script>
 
 <style lang="scss" scoped>
-.cloud {
-  position: relative;
-  top: 10%;
-  left: 10%;
-  width: 200px;
-  height: 100px;
-  background: #fff;
-  border-radius: 100px;
-  transform: skew(-20deg) rotate(-5deg);
-  box-shadow: -20px -20px 0 -10px #fff, 20px -20px 0 -10px #fff, 0 0 0 30px #fff,
-    15px 10px 0 0 #fff, -15px 10px 0 0 #fff;
-}
-.path {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-}
-.wrapper {
-  //   background: white;
-  width: 100%;
-  height: 100%;
-}
 .container {
-  position: relative;
   width: 100%;
-  height: 60vh;
-  background: red;
-  .sun {
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    transform: translate3d(-100%, -50%, 0);
-    width: 20vh;
-    height: 20vh;
-    background: rgb(236, 217, 41);
-    border-radius: 100px;
+  height: calc(var(--vh) * 100);
+  background: black;
+  overflow: hidden;
+  .wrapper {
+    width: 680px;
+    height: 400px;
+    -webkit-font-smoothing: antialiased;
+    margin: 50px auto;
+    perspective: 1100px;
+    margin-bottom: 200px;
+    transform-style: preserve-3d;
   }
-  .moon {
+  .card {
     position: absolute;
-    top: 50%;
-    transform: translate3d(0, -50%, 0);
-    width: 20vh;
-    height: 20vh;
-    border-radius: 50%;
-    box-shadow: inset 2.5em -2.5em #e7c738;
+    width: 180px;
+    height: 180px;
+    display: inline-block;
+    margin: 10px 20px 50px 235px;
+    overflow: hidden;
+    border: 1px solid #00fff3;
+    color: #00fff2;
+    background: transparent;
+    height: 600px;
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 4px 8px 0 #00fff3, 0 6px 20px 0 #00fff3;
+    }
   }
+}
+img {
+  position: relative;
+  object-fit: cover;
+  height: 80%;
 }
 </style>
