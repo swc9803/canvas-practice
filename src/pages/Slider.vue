@@ -5,9 +5,7 @@
         <div>
           text in 3d
           <small><br />text in 3d</small>
-          <router-link :to="`/${card.path}`">
-            <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
-          </router-link>
+          <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
         </div>
       </div>
     </div>
@@ -15,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
@@ -24,32 +22,26 @@ const cards = [
   {
     src: "",
     alt: "test",
-    path: "",
   },
   {
     src: "",
     alt: "test",
-    path: "",
   },
   {
     src: "",
     alt: "test",
-    path: "",
   },
   {
     src: "",
     alt: "test",
-    path: "",
   },
   {
     src: "",
     alt: "test",
-    path: "",
   },
   {
     src: "",
     alt: "test",
-    path: "",
   },
 ];
 
@@ -57,52 +49,49 @@ const wrapperRef = ref();
 const cardArray = ref([]);
 const cardRef = (el) => cardArray.value.push(el);
 
-const dragDistancePerRotation = 3000;
-const radius = 520;
+const proxy = document.createElement("div");
+const dragAmount = 3000;
+const cardGap = 520;
 let startProgress;
+let draggableTrigger;
 
 onMounted(() => {
-  let proxy = document.createElement("div");
-  let progressWrap = gsap.utils.wrap(0, 1);
+  let progressLimit = gsap.utils.wrap(0, 1);
   const spin = gsap.fromTo(
     cardArray.value,
     {
       rotationY: (i) => (i * 360) / cardArray.value.length,
     },
     {
-      rotationY: "-=360",
-      transformOrigin: `50% 50% ${-radius}px`,
-      duration: 20,
+      rotationY: "+=360",
+      transformOrigin: `50% 50% ${-cardGap}px`,
+      duration: 50,
       ease: "none",
       repeat: -1,
     }
   );
-  Draggable.create(proxy, {
+  draggableTrigger = Draggable.create(proxy, {
     trigger: wrapperRef.value,
-    type: "x",
-    inertia: true,
     allowNativeTouchScrolling: true,
     onPress() {
       gsap.killTweensOf(spin);
-      spin.timeScale(0);
+      spin.timeScale(0); // 애니메이션 중지
       startProgress = spin.progress();
     },
-    onDrag: updateRotation,
-    onThrowUpdate: updateRotation,
+    onDrag() {
+      let currentProgress = startProgress + (this.startX - this.x) / dragAmount;
+      spin.progress(progressLimit(currentProgress));
+    },
     onRelease() {
       if (!this.tween || !this.tween.isActive()) {
         gsap.to(spin, { timeScale: 1, duration: 1 });
       }
     },
-    onThrowComplete() {
-      gsap.to(spin, { timeScale: 1, duration: 1 });
-    },
   });
+});
 
-  function updateRotation() {
-    let p = startProgress + (this.startX - this.x) / dragDistancePerRotation;
-    spin.progress(progressWrap(p));
-  }
+onBeforeUnmount(() => {
+  draggableTrigger.forEach((trigger) => trigger.kill());
 });
 </script>
 
@@ -113,12 +102,12 @@ onMounted(() => {
   background: black;
   overflow: hidden;
   .wrapper {
+    position: relative;
     width: 680px;
     height: 400px;
     -webkit-font-smoothing: antialiased;
-    margin: 50px auto;
     perspective: 1100px;
-    margin-bottom: 200px;
+    // background: white;
     transform-style: preserve-3d;
   }
   .card {
@@ -137,10 +126,5 @@ onMounted(() => {
       box-shadow: 0 4px 8px 0 #00fff3, 0 6px 20px 0 #00fff3;
     }
   }
-}
-img {
-  position: relative;
-  object-fit: cover;
-  height: 80%;
 }
 </style>

@@ -25,6 +25,7 @@ import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
 import Textparticle from "../pages/TextParticle.vue";
 import Perspective from "../pages/Perspective.vue";
+import Slider from "../pages/Slider.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -157,6 +158,11 @@ const routes = [
     path: "/perspective",
     name: "perspective",
     component: Perspective,
+  },
+  {
+    path: "/slider",
+    name: "slider",
+    component: Slider,
   },
   {
     path: "/test",
