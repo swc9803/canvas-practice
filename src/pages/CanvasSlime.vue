@@ -17,18 +17,14 @@ class Ball {
     this.x =
       this.radius * 2 + Math.random() * (this.effect.width - this.radius * 4);
     this.y = -this.radius;
-    this.speedX = Math.random() * 0.2 - 0.1;
     this.speedY = Math.random() * 1.5 + 0.5;
     this.angle = 0;
     this.va = Math.random() * 0.1 - 0.05;
     this.range = Math.random() * 30;
-    this.gravity = Math.random() * 0.005;
+    this.gravity = Math.random() * 0.003;
     this.vy = 0;
   }
-  update() {
-    if (this.x < this.radius || this.effect.width - this.radius < this.x) {
-      this.speedX *= -1;
-    }
+  update(ballList) {
     if (this.effect.height + this.radius < this.y) {
       this.radius = Math.random() * 80 + 30; // 원의 크기
       this.y = -this.radius;
@@ -42,8 +38,23 @@ class Ball {
       this.speedY += this.vy;
     }
 
-    this.x += this.speedX;
-    this.y += this.speedY;
+    if (this.y <= this.effect.height - this.radius / 2) {
+      this.y += this.speedY;
+    } else {
+      ballList.forEach((ball) => {
+        if (ball !== this) {
+          const dx = this.x - ball.x;
+          const dy = this.y - ball.y;
+          const dist = Math.sqrt(dx ** 2 + dy ** 2);
+          const minDist = this.radius / 2 + ball.radius / 2;
+          if (dist < minDist) {
+            this.speedY = this.radius * 0.1;
+            this.x += this.speedY * Math.sign(dx);
+            ball.x -= ball.speedY * Math.sign(dx);
+          }
+        }
+      });
+    }
   }
   draw(context) {
     context.beginPath();
@@ -68,7 +79,7 @@ class MetaballsEffect {
     }
   }
   update() {
-    this.metaballsArray.forEach((metaball) => metaball.update());
+    this.metaballsArray.forEach((metaball, index, arr) => metaball.update(arr));
   }
   draw(context) {
     this.metaballsArray.forEach((metaball) => metaball.draw(context));
@@ -97,7 +108,7 @@ const onResize = () => {
     canvasRef.value.width,
     canvasRef.value.height
   );
-  ctx.value.fillStyle = "white";
+  ctx.value.fillStyle = "DeepSkyBlue";
   effect.value.resize(canvasRef.value.width, canvasRef.value.height);
   effect.value.init(20);
 };
@@ -122,10 +133,10 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: black;
+  background: rgb(255, 255, 255);
   overflow: hidden;
   canvas {
-    background: black;
+    background: rgb(255, 255, 255);
     filter: blur(20px) contrast(40);
   }
 }
