@@ -1,11 +1,14 @@
 <template>
   <div class="container">
-    <img src="" alt="" />
+    <p>
+      ⚠️Because it uses svg filter, animation breaks can occur on large screens
+    </p>
+    <img />
     <canvas ref="canvasRef" />
     <svg>
       <defs>
         <filter id="blob" filterUnits="userSpaceOnUse">
-          <feGaussianBlur stdDeviation="10" />
+          <feGaussianBlur stdDeviation="15" />
           <feColorMatrix
             type="matrix"
             values="1 0 0 0 0
@@ -30,24 +33,19 @@ class Ball {
   constructor(effect) {
     this.effect = effect;
     this.radius = Math.random() * 80 + 30;
-    this.x = Math.random() * 0.9 + canvasRef.value.width / 2;
+    this.x = Math.floor(Math.random() * 201) - 100 + canvasRef.value.width / 2;
     this.y = -this.radius;
     this.speedY = Math.random() * 1.5 + 0.5;
-    this.angle = 0;
-    this.va = Math.random() * 0.1 - 0.05;
-    this.range = Math.random() * 30;
     this.gravity = Math.random() * 0.003;
     this.vy = 0;
-    this.scale = 1;
+    this.scaleY = 1;
   }
-  update(ballList) {
+  update(ballArray) {
     if (this.effect.height + this.radius < this.y) {
       this.radius = Math.random() * 80 + 30;
       this.y = -this.radius;
       this.vy = 0;
       this.speedY = Math.random() * 1 + 1;
-      this.x =
-        this.radius * 2 + Math.random() * (this.effect.width - this.radius * 4);
     }
 
     if (this.y > this.radius * 2) {
@@ -58,7 +56,7 @@ class Ball {
     if (this.y <= this.effect.height - this.radius / 2) {
       this.y += this.speedY;
     } else {
-      ballList.forEach((ball) => {
+      ballArray.forEach((ball) => {
         if (ball !== this) {
           const dx = this.x - ball.x;
           const dy = this.y - ball.y;
@@ -66,20 +64,26 @@ class Ball {
           const minDist = this.radius / 2 + ball.radius / 2;
           if (dist < minDist) {
             this.speedY = this.radius * 0.1;
-            this.x += this.speedY * 0.05 * Math.sign(dx);
-            ball.x -= ball.speedY * 0.05 * Math.sign(dx);
+            this.x += this.speedY * Math.sign(dx);
           }
         }
       });
-      this.scale = 0.5;
+      if (this.scaleY >= 0.5) {
+        this.scaleY -= 0.01;
+      }
     }
   }
   draw(context) {
     context.beginPath();
-    context.save();
-    context.scale(1, this.scale);
-    context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    context.restore();
+    context.ellipse(
+      this.x,
+      this.y,
+      this.radius,
+      this.radius * this.scaleY,
+      0,
+      0,
+      2 * Math.PI
+    );
     context.fill();
   }
   resize() {
@@ -131,7 +135,11 @@ const onResize = () => {
     canvasRef.value.height
   );
   effect.value.resize(canvasRef.value.width, canvasRef.value.height);
-  effect.value.init(20);
+  if (matchMedia("(max-width: 768px)").matches) {
+    effect.value.init(20);
+  } else {
+    effect.value.init(30);
+  }
 };
 
 onMounted(() => {
@@ -155,12 +163,20 @@ onBeforeUnmount(() => {
   width: 100%;
   height: calc(var(--vh) * 100);
   overflow: hidden;
+  p {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: red;
+    font-size: 1.2em;
+  }
   img {
     position: absolute;
-    background: url("~@/assets/test.jpg") no-repeat center/cover;
-    bottom: 0;
+    background: url("~@/assets/tang.webp") no-repeat center/cover;
+    bottom: -1px;
     width: 100%;
-    height: 30vh;
+    height: 20%;
   }
   canvas {
     position: relative;
@@ -169,7 +185,6 @@ onBeforeUnmount(() => {
   }
   svg {
     position: absolute;
-    width: 0;
     height: 0;
   }
 }
