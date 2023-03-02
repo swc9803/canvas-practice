@@ -1,6 +1,22 @@
 <template>
   <div class="container">
+    <img src="" alt="" />
     <canvas ref="canvasRef" />
+    <svg>
+      <defs>
+        <filter id="blob" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="10" />
+          <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              0 0 0 20 -10"
+          />
+          <feBlend mode="normal" in="SourceGraphic" />
+        </filter>
+      </defs>
+    </svg>
   </div>
 </template>
 
@@ -13,9 +29,8 @@ let slimeAnimation;
 class Ball {
   constructor(effect) {
     this.effect = effect;
-    this.radius = Math.random() * 80 + 30; // 원의 크기
-    this.x =
-      this.radius * 2 + Math.random() * (this.effect.width - this.radius * 4);
+    this.radius = Math.random() * 80 + 30;
+    this.x = Math.random() * 0.9 + canvasRef.value.width / 2;
     this.y = -this.radius;
     this.speedY = Math.random() * 1.5 + 0.5;
     this.angle = 0;
@@ -23,16 +38,18 @@ class Ball {
     this.range = Math.random() * 30;
     this.gravity = Math.random() * 0.003;
     this.vy = 0;
+    this.scale = 1;
   }
   update(ballList) {
     if (this.effect.height + this.radius < this.y) {
-      this.radius = Math.random() * 80 + 30; // 원의 크기
+      this.radius = Math.random() * 80 + 30;
       this.y = -this.radius;
       this.vy = 0;
-      this.speedY = Math.random() * 1.5 + 0.5;
+      this.speedY = Math.random() * 1 + 1;
       this.x =
         this.radius * 2 + Math.random() * (this.effect.width - this.radius * 4);
     }
+
     if (this.y > this.radius * 2) {
       this.vy += this.gravity;
       this.speedY += this.vy;
@@ -45,20 +62,24 @@ class Ball {
         if (ball !== this) {
           const dx = this.x - ball.x;
           const dy = this.y - ball.y;
-          const dist = Math.sqrt(dx ** 2 + dy ** 2);
+          const dist = Math.sqrt(dx * dx + dy * dy);
           const minDist = this.radius / 2 + ball.radius / 2;
           if (dist < minDist) {
             this.speedY = this.radius * 0.1;
-            this.x += this.speedY * Math.sign(dx);
-            ball.x -= ball.speedY * Math.sign(dx);
+            this.x += this.speedY * 0.05 * Math.sign(dx);
+            ball.x -= ball.speedY * 0.05 * Math.sign(dx);
           }
         }
       });
+      this.scale = 0.5;
     }
   }
   draw(context) {
     context.beginPath();
+    context.save();
+    context.scale(1, this.scale);
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    context.restore();
     context.fill();
   }
   resize() {
@@ -82,6 +103,7 @@ class MetaballsEffect {
     this.metaballsArray.forEach((metaball, index, arr) => metaball.update(arr));
   }
   draw(context) {
+    ctx.value.fillStyle = "#FFC107";
     this.metaballsArray.forEach((metaball) => metaball.draw(context));
   }
   resize(newWidth, newHeight) {
@@ -108,7 +130,6 @@ const onResize = () => {
     canvasRef.value.width,
     canvasRef.value.height
   );
-  ctx.value.fillStyle = "DeepSkyBlue";
   effect.value.resize(canvasRef.value.width, canvasRef.value.height);
   effect.value.init(20);
 };
@@ -133,11 +154,23 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: calc(var(--vh) * 100);
-  background: rgb(255, 255, 255);
   overflow: hidden;
+  img {
+    position: absolute;
+    background: url("~@/assets/test.jpg") no-repeat center/cover;
+    bottom: 0;
+    width: 100%;
+    height: 30vh;
+  }
   canvas {
-    background: rgb(255, 255, 255);
-    filter: blur(20px) contrast(40);
+    position: relative;
+    opacity: 0.7;
+    filter: url("#blob");
+  }
+  svg {
+    position: absolute;
+    width: 0;
+    height: 0;
   }
 }
 </style>
