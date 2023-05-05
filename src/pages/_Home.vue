@@ -36,6 +36,7 @@ const routes = [
   { name: "textparticle" },
   { name: "perspective" },
   { name: "slider" },
+  { name: "link" },
   { name: "test" },
 ];
 </script>

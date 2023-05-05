@@ -1,146 +1,128 @@
 <template>
-  <div class="container">
-    <div ref="wrapperRef" class="wrapper">
-      <div v-for="card in cards" :key="card.id" :ref="cardRef" class="card">
-        <div>
-          text in 3d
-          <small><br />text in 3d</small>
-          <router-link :to="`/${card.path}`">
-            <!-- <img class="" :src="`@/assets/${card.src}.jpg`" /> -->
-          </router-link>
-        </div>
-      </div>
-    </div>
-  </div>
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=1"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=2"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=3"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=4"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=1"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=2"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=3"
+    alt=""
+    class="skewElem"
+  />
+  <img
+    width="300"
+    height="300"
+    src="https://picsum.photos/300/300?random=4"
+    alt=""
+    class="skewElem"
+  />
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import gsap from "gsap";
-import { Draggable } from "gsap/Draggable";
-gsap.registerPlugin(Draggable);
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const cards = [
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-  {
-    src: "",
-    alt: "test",
-    path: "",
-  },
-];
-
-const wrapperRef = ref();
-const cardArray = ref([]);
-const cardRef = (el) => cardArray.value.push(el);
-
-const dragDistancePerRotation = 3000;
-const radius = 520;
-let startProgress;
+gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
-  let proxy = document.createElement("div");
-  let progressWrap = gsap.utils.wrap(0, 1);
-  const spin = gsap.fromTo(
-    cardArray.value,
-    {
-      rotationY: (i) => (i * 360) / cardArray.value.length,
-    },
-    {
-      rotationY: "-=360",
-      transformOrigin: `50% 50% ${-radius}px`,
-      duration: 20,
-      ease: "none",
-      repeat: -1,
-    }
-  );
-  Draggable.create(proxy, {
-    trigger: wrapperRef.value,
-    type: "x",
-    inertia: true,
-    allowNativeTouchScrolling: true,
-    onPress() {
-      gsap.killTweensOf(spin);
-      spin.timeScale(0);
-      startProgress = spin.progress();
-    },
-    onDrag: updateRotation,
-    onThrowUpdate: updateRotation,
-    onRelease() {
-      if (!this.tween || !this.tween.isActive()) {
-        gsap.to(spin, { timeScale: 1, duration: 1 });
+  let proxy = { skew: 0 },
+    skewSetter = gsap.quickSetter(".skewElem", "skewY", "deg"), // fast
+    clamp = gsap.utils.clamp(-20, 20); // don't let the skew go beyond 20 degrees.
+
+  ScrollTrigger.create({
+    onUpdate: (self) => {
+      let skew = clamp(self.getVelocity() / -300);
+      // only do something if the skew is MORE severe. Remember, we're always tweening back to 0, so if the user slows their scrolling quickly, it's more natural to just let the tween handle that smoothly rather than jumping to the smaller skew.
+      if (Math.abs(skew) > Math.abs(proxy.skew)) {
+        proxy.skew = skew;
+        gsap.to(proxy, {
+          skew: 0,
+          duration: 0.8,
+          ease: "power3",
+          overwrite: true,
+          onUpdate: () => skewSetter(proxy.skew),
+        });
       }
-    },
-    onThrowComplete() {
-      gsap.to(spin, { timeScale: 1, duration: 1 });
     },
   });
 
-  function updateRotation() {
-    let p = startProgress + (this.startX - this.x) / dragDistancePerRotation;
-    spin.progress(progressWrap(p));
-  }
+  // make the right edge "stick" to the scroll bar. force3D: true improves performance
+  gsap.set(".skewElem", { transformOrigin: "right bottom", force3D: true });
 });
 </script>
 
 <style lang="scss" scoped>
-.container {
+header {
+  position: fixed;
   width: 100%;
-  height: calc(var(--vh) * 100);
-  background: black;
-  overflow: hidden;
-  .wrapper {
-    width: 680px;
-    height: 400px;
-    -webkit-font-smoothing: antialiased;
-    margin: 50px auto;
-    perspective: 1100px;
-    margin-bottom: 200px;
-    transform-style: preserve-3d;
+  height: 64px;
+  padding: 0 60px;
+  display: flex;
+  justify-content: space-between;
+  .logo {
+    margin-right: auto;
+    width: 10%;
   }
-  .card {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    display: inline-block;
-    margin: 10px 20px 50px 235px;
-    overflow: hidden;
-    border: 1px solid #00fff3;
-    color: #00fff2;
-    background: transparent;
-    height: 600px;
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 4px 8px 0 #00fff3, 0 6px 20px 0 #00fff3;
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    width: 10%;
+    .btn {
+      width: 10%;
+      border: 1px solid black;
+      margin-right: 20px;
+      margin-bottom: 10px;
     }
   }
-}
-img {
-  position: relative;
-  object-fit: cover;
-  height: 80%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    nav {
+      flex-direction: column;
+      .btn {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  }
 }
 </style>
