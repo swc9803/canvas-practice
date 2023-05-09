@@ -1,6 +1,11 @@
 <template>
   <div>
-    <canvas ref="canvasRef" />
+    <canvas
+      ref="canvasRef"
+      @mousemove="onMouseMove"
+      @mousedown="onMouseDown"
+      @mouseup="onMouseUp"
+    />
   </div>
 </template>
 
@@ -11,16 +16,41 @@ const canvasRef = ref();
 let ctx;
 let effect;
 
+let mouse = {
+  x: 0,
+  y: 0,
+  clicked: false,
+  radius: 150,
+};
+
+const onMouseMove = (e) => {
+  if (mouse.clicked) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }
+};
+const onMouseDown = (e) => {
+  mouse.clicked = true;
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+};
+const onMouseUp = () => {
+  mouse.clicked = false;
+};
+
 class Particle {
   constructor(effect) {
     this.effect = effect;
-    this.radius = Math.random() * 6 + 3;
+    this.radius = 2; //Math.random() * 6 + 3;
     this.x =
       this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y =
       this.radius + Math.random() * (this.effect.height - this.radius * 2);
     this.vx = Math.random() * 1 - 0.5;
     this.vy = Math.random() * 1 - 0.5;
+    this.pushX = 0;
+    this.pushY = 0;
+    this.friction = 0.95;
   }
   draw(context) {
     const gradient = context.createLinearGradient(
@@ -30,8 +60,8 @@ class Particle {
       canvasRef.value.height
     );
     gradient.addColorStop(0, "white");
-    gradient.addColorStop(0.5, "magenta");
-    gradient.addColorStop(1, "blue");
+    gradient.addColorStop(0.5, "gold");
+    gradient.addColorStop(1, "orangered");
 
     context.fillStyle = gradient;
     context.fill();
@@ -41,14 +71,33 @@ class Particle {
     context.stroke();
   }
   update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x > this.effect.width - this.radius || this.x < this.radius) {
+    if (mouse.clicked) {
+      const dx = this.x - mouse.x;
+      const dy = this.y - mouse.y;
+      const distance = Math.hypot(dx, dy);
+      const force = mouse.radius / distance;
+      if (distance < mouse.radius) {
+        const angle = Math.atan2(dy, dx);
+        this.pushX += Math.cos(angle) * force;
+        this.pushY += Math.sin(angle) * force;
+      }
+    }
+    if (this.x < this.radius) {
+      this.x = this.radius;
+      this.vx *= -1;
+    } else if (this.x > this.effect.width - this.radius) {
+      this.x = this.effect.width - this.radius;
       this.vx *= -1;
     }
-    if (this.y > this.effect.height - this.radius || this.y < this.radius) {
+    if (this.y < this.radius) {
+      this.y = this.radius;
+      this.vy *= -1;
+    } else if (this.y > this.effect.height - this.radius) {
+      this.y = this.effect.height - this.radius;
       this.vy *= -1;
     }
+    this.x += (this.pushX *= this.friction) + this.vx;
+    this.y += (this.pushY *= this.friction) + this.vy;
   }
 }
 
