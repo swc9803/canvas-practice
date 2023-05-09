@@ -104,13 +104,12 @@ function animate() {
 const onResize = () => {
   canvasRef.value.width = window.innerWidth;
   canvasRef.value.height = window.innerHeight;
+  effect = new Effect(canvasRef.value);
 };
 
 onMounted(() => {
   ctx = canvasRef.value.getContext("2d");
   onResize();
-
-  effect = new Effect(canvasRef.value);
 
   animate();
   window.addEventListener("resize", onResize);
