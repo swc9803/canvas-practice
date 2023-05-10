@@ -1,128 +1,56 @@
 <template>
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=1"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=2"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=3"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=4"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=1"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=2"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=3"
-    alt=""
-    class="skewElem"
-  />
-  <img
-    width="300"
-    height="300"
-    src="https://picsum.photos/300/300?random=4"
-    alt=""
-    class="skewElem"
-  />
+  <div class="container">
+    <div v-for="item in items" :key="item.id" class="item" :class="item.class">
+      item{{ item.id }}
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { onMounted } from "vue";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+const items = [
+  { id: 1, class: "color1" },
+  { id: 2, class: "color2" },
+  { id: 3, class: "color3" },
+  { id: 4, class: "color4" },
+  { id: 5, class: "color5" },
+  { id: 6, class: "color1" },
+  { id: 7, class: "color2" },
+  { id: 8, class: "color3" },
+  { id: 9, class: "color4" },
+  { id: 10, class: "color5" },
+];
 
-onMounted(() => {
-  let proxy = { skew: 0 },
-    skewSetter = gsap.quickSetter(".skewElem", "skewY", "deg"), // fast
-    clamp = gsap.utils.clamp(-20, 20); // don't let the skew go beyond 20 degrees.
-
-  ScrollTrigger.create({
-    onUpdate: (self) => {
-      let skew = clamp(self.getVelocity() / -300);
-      // only do something if the skew is MORE severe. Remember, we're always tweening back to 0, so if the user slows their scrolling quickly, it's more natural to just let the tween handle that smoothly rather than jumping to the smaller skew.
-      if (Math.abs(skew) > Math.abs(proxy.skew)) {
-        proxy.skew = skew;
-        gsap.to(proxy, {
-          skew: 0,
-          duration: 0.8,
-          ease: "power3",
-          overwrite: true,
-          onUpdate: () => skewSetter(proxy.skew),
-        });
-      }
-    },
-  });
-
-  // make the right edge "stick" to the scroll bar. force3D: true improves performance
-  gsap.set(".skewElem", { transformOrigin: "right bottom", force3D: true });
-});
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
-header {
-  position: fixed;
-  width: 100%;
-  height: 64px;
-  padding: 0 60px;
-  display: flex;
-  justify-content: space-between;
-  .logo {
-    margin-right: auto;
-    width: 10%;
-  }
-  nav {
+.container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  .item {
     display: flex;
-    flex-wrap: wrap;
-    width: 10%;
-    .btn {
-      width: 10%;
-      border: 1px solid black;
-      margin-right: 20px;
-      margin-bottom: 10px;
-    }
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #181818;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
-  @media (max-width: 768px) {
-    flex-direction: column;
-    nav {
-      flex-direction: column;
-      .btn {
-        width: 100%;
-        margin-right: 0;
-      }
-    }
-  }
+}
+.color1 {
+  background-color: #d7bee2;
+}
+.color2 {
+  background-color: #a9c7d8;
+}
+.color3 {
+  background-color: #c0df9f;
+}
+.color4 {
+  background-color: #f2e5a6;
+}
+.color5 {
+  background-color: #e89d9d;
 }
 </style>

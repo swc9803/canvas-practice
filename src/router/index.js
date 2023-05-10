@@ -27,6 +27,7 @@ import Textparticle from "../pages/TextParticle.vue";
 import Perspective from "../pages/Perspective.vue";
 import Slider from "../pages/Slider.vue";
 import Link from "../pages/CanvasLink.vue";
+import Grid from "../pages/GridTest.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -169,6 +170,11 @@ const routes = [
     path: "/link",
     name: "link",
     component: Link,
+  },
+  {
+    path: "/grid",
+    name: "grid",
+    component: Grid,
   },
   {
     path: "/test",

@@ -41,7 +41,7 @@ const onMouseUp = () => {
 class Particle {
   constructor(effect) {
     this.effect = effect;
-    this.radius = 2; //Math.random() * 6 + 3;
+    this.radius = Math.floor(Math.random() * 10 + 1);
     this.x =
       this.radius + Math.random() * (this.effect.width - this.radius * 2);
     this.y =
