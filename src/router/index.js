@@ -6,6 +6,7 @@ import Input from "../pages/Input.vue";
 import RainDrawImg from "../pages/RainDrawImg.vue";
 import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
+import CanvasPhysicParticle from "../pages/CanvasPhysicParticle.vue";
 import CanvasSlime from "../pages/CanvasSlime.vue";
 import ScrollSkew from "../pages/ScrollSkew.vue";
 import Glitch from "../pages/Glitch.vue";
@@ -65,6 +66,11 @@ const routes = [
     path: "/particletext",
     name: "particletext",
     component: CanvasParticleText,
+  },
+  {
+    path: "/physic",
+    name: "physic",
+    component: CanvasPhysicParticle,
   },
   {
     path: "/slime",
