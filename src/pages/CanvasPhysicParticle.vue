@@ -17,7 +17,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
 const caption = ref();
-const debug = ref(true);
+const debug = ref(false);
 let ctx;
 let effect;
 
@@ -45,6 +45,7 @@ const onMouseUp = () => {
 const onkeyDown = (e) => {
   if (e.key === "d") {
     debug.value = !debug.value;
+    console.log(debug.value);
   }
 };
 
@@ -59,6 +60,8 @@ class Particle {
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.friction = 0.95;
+    this.width = this.radius * 2;
+    this.height = this.radius * 2;
   }
   draw(context) {
     const gradient = context.createLinearGradient(
@@ -97,6 +100,17 @@ class Particle {
       this.x > this.effect.width + this.radius + this.effect.maxDistance
     ) {
       this.reset();
+    }
+
+    // 충돌 감지
+    if (
+      this.x - this.radius <
+        this.effect.element.x + this.effect.element.width &&
+      this.x - this.radius + this.width > this.effect.element.x &&
+      this.y < this.effect.element.y + 5 &&
+      this.height + this.y > this.effect.element.y
+    ) {
+      this.vy *= -1;
     }
   }
   reset() {
@@ -179,7 +193,6 @@ onMounted(() => {
   onResize();
 
   animate();
-  canvasRef.value.addEventListener("keydown", onkeyDown);
   window.addEventListener("resize", onResize);
 });
 
