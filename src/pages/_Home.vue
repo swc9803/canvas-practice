@@ -37,6 +37,7 @@ const routes = [
   { name: "perspective" },
   { name: "slider" },
   { name: "link" },
+  { name: "physic" },
   { name: "test" },
 ];
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div ref="containerRef" class="container" tabindex="0">
     <div v-for="item in items" :key="item.id" class="item" :class="item.class">
       item{{ item.id }}
     </div>
@@ -7,7 +7,9 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
+
+const containerRef = ref();
 
 const items = [
   { id: 1, class: "color1" },
@@ -22,7 +24,14 @@ const items = [
   { id: 10, class: "color5" },
 ];
 
-onMounted(() => {});
+const onkeyDown = (e) => {
+  console.log(e);
+  console.log("e");
+};
+
+onMounted(() => {
+  containerRef.value.addEventListener("keydown", onkeyDown);
+});
 </script>
 
 <style lang="scss" scoped>
