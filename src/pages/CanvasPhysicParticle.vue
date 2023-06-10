@@ -53,9 +53,9 @@ class Particle {
   constructor(effect) {
     this.effect = effect;
     this.radius = Math.floor(Math.random() * 7 + 3);
-    this.x = this.effect.element.x + this.effect.element.width;
+    this.x = this.effect.element.x + this.effect.element.width * Math.random();
     this.y = -Math.random() * this.effect.height * 0.5;
-    this.vx = Math.random() * -2;
+    this.vx = Math.random() * 2 - 1;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.friction = 0.95;
@@ -64,22 +64,22 @@ class Particle {
     this.bounced = 0;
   }
   draw(context) {
-    const gradient = context.createLinearGradient(
+    let gradient = context.createLinearGradient(
       0,
       0,
       0,
       canvasRef.value.height
     );
-    gradient.addColorStop(0, "darkblue");
-    gradient.addColorStop(0.5, "white");
-    gradient.addColorStop(1, "lightblue");
+    gradient.addColorStop(0, "white");
+    gradient.addColorStop(0.5, "magenta");
+    gradient.addColorStop(1, "pink");
 
     context.fillStyle = gradient;
     context.fill();
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     context.strokeStyle = "white";
-    context.stroke();
+    // context.stroke();
     if (debug.value) {
       context.strokeRect(
         this.x - this.radius,
@@ -109,21 +109,22 @@ class Particle {
       this.x - this.radius + this.width > this.effect.element.x &&
       this.y - this.radius < this.effect.element.y + 5 &&
       this.height + this.y - this.radius > this.effect.element.y &&
-      this.bounced < 5
+      this.bounced < 10
     ) {
-      this.vy *= -0.5;
+      this.vy *= -0.6;
+      this.vx *= 2;
       this.y = this.effect.element.y - this.radius;
       this.bounced++;
     }
   }
   reset() {
-    this.x = this.effect.element.x + this.effect.element.width * 1.5;
+    this.x = this.effect.element.x + this.effect.element.width * Math.random();
     this.y =
       -this.radius -
       this.effect.maxDistance -
       Math.random() * this.effect.height * 0.2;
     this.vy = 0;
-    this.vx = Math.random() * -2;
+    this.vx = Math.random() * 2 - 1;
     this.bounced = 0;
   }
 }
@@ -136,6 +137,7 @@ class Effect {
     this.element = caption.value.getBoundingClientRect();
     this.particles = [];
     this.numberOfParticles = 200;
+    this.maxDistance = 90;
     this.createParticles();
   }
   createParticles() {
@@ -144,6 +146,16 @@ class Effect {
     }
   }
   handleParticles(context) {
+    let gradient = context.createLinearGradient(
+      0,
+      0,
+      0,
+      canvasRef.value.height
+    );
+    gradient.addColorStop(0, "white");
+    gradient.addColorStop(0.5, "magenta");
+    gradient.addColorStop(1, "pink");
+    context.fillStyle = gradient;
     this.connectParticles(context);
     this.particles.forEach((particle) => {
       particle.draw(context);
@@ -159,7 +171,6 @@ class Effect {
     }
   }
   connectParticles(context) {
-    this.maxDistance = 100;
     for (let a = 0; a < this.particles.length; a++) {
       for (let b = a; b < this.particles.length; b++) {
         const dx = this.particles[a].x - this.particles[b].x;
@@ -181,7 +192,9 @@ class Effect {
 }
 
 function animate() {
-  ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
+  //   ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvasRef.value.width, canvasRef.value.height);
   effect.handleParticles(ctx);
   requestAnimationFrame(animate);
 }
