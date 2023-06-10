@@ -53,15 +53,15 @@ class Particle {
   constructor(effect) {
     this.effect = effect;
     this.radius = Math.floor(Math.random() * 7 + 3);
-    this.x =
-      this.radius + Math.random() * (this.effect.width - this.radius * 2);
+    this.x = this.effect.element.x + this.effect.element.width;
     this.y = -Math.random() * this.effect.height * 0.5;
-    this.vx = Math.random() * 1 - 0.5;
+    this.vx = Math.random() * -2;
     this.vy = 0;
     this.gravity = this.radius * 0.001;
     this.friction = 0.95;
     this.width = this.radius * 2;
     this.height = this.radius * 2;
+    this.bounced = 0;
   }
   draw(context) {
     const gradient = context.createLinearGradient(
@@ -107,20 +107,24 @@ class Particle {
       this.x - this.radius <
         this.effect.element.x + this.effect.element.width &&
       this.x - this.radius + this.width > this.effect.element.x &&
-      this.y < this.effect.element.y + 5 &&
-      this.height + this.y > this.effect.element.y
+      this.y - this.radius < this.effect.element.y + 5 &&
+      this.height + this.y - this.radius > this.effect.element.y &&
+      this.bounced < 5
     ) {
-      this.vy *= -1;
+      this.vy *= -0.5;
+      this.y = this.effect.element.y - this.radius;
+      this.bounced++;
     }
   }
   reset() {
-    this.x =
-      this.radius + Math.random() * (this.effect.width - this.radius * 2);
+    this.x = this.effect.element.x + this.effect.element.width * 1.5;
     this.y =
       -this.radius -
       this.effect.maxDistance -
       Math.random() * this.effect.height * 0.2;
     this.vy = 0;
+    this.vx = Math.random() * -2;
+    this.bounced = 0;
   }
 }
 
@@ -129,10 +133,10 @@ class Effect {
     this.canvas = canvas;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.element = caption.value.getBoundingClientRect();
     this.particles = [];
     this.numberOfParticles = 200;
     this.createParticles();
-    this.element = caption.value.getBoundingClientRect();
   }
   createParticles() {
     for (let i = 0; i < this.numberOfParticles; i++) {
@@ -214,7 +218,7 @@ h1 {
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 80px;
+  font-size: 100px;
   font-family: Impact, cursive;
   border-top: 5px solid white;
   z-index: 1;
