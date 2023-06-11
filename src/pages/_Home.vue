@@ -38,6 +38,7 @@ const routes = [
   { name: "slider" },
   { name: "link" },
   { name: "physic" },
+  { name: "star" },
   { name: "test" },
 ];
 </script>

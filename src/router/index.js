@@ -20,6 +20,7 @@ import CanvasPattern from "../pages/CanvasPattern.vue";
 import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
+import CanvasStar from "../pages/CanvasStar.vue";
 import Corner from "../pages/CornerFocus.vue";
 import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
@@ -136,6 +137,11 @@ const routes = [
     path: "/matrix",
     name: "matrix",
     component: CanvasMatrix,
+  },
+  {
+    path: "/star",
+    name: "star",
+    component: CanvasStar,
   },
   {
     path: "/corner",
