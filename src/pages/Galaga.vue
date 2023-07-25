@@ -98,6 +98,7 @@ class Enemy {
       if (!projectile.free && this.game.checkCollision(this, projectile)) {
         this.markedForDeletion = true;
         projectile.reset();
+        this.game.score++;
       }
     });
   }
@@ -161,6 +162,8 @@ class Game {
     this.waves = [];
     this.waves.push(new Wave(this));
 
+    this.score = 0;
+
     window.addEventListener("keydown", (e) => {
       if (this.keys.indexOf(e.key) === -1) this.keys.push(e.key);
       if (e.key === "1") this.player.shoot();
@@ -171,6 +174,7 @@ class Game {
     });
   }
   render(context) {
+    this.drawStatusText(context);
     this.player.draw(context);
     this.player.update();
     this.projectilesPool.forEach((projectile) => {
@@ -201,6 +205,9 @@ class Game {
       a.y + a.height > b.y
     );
   }
+  drawStatusText(context) {
+    context.fillText(`Score: ${this.score}`, 20, 40);
+  }
 }
 
 onMounted(() => {
@@ -211,6 +218,7 @@ onMounted(() => {
   ctx.fillStyle = "white";
   ctx.strokeStyle = "white";
   ctx.lineWidth = 5;
+  ctx.font = "30px Impact";
 
   const game = new Game(canvas);
   game.render(ctx);
