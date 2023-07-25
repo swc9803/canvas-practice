@@ -19,6 +19,7 @@ import ComparisonImg from "../pages/ComparisonImg.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
 import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
+import CanvasGoku from "../pages/CanvasGoku.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import CanvasStar from "../pages/CanvasStar.vue";
 import Corner from "../pages/CornerFocus.vue";
@@ -30,6 +31,7 @@ import Perspective from "../pages/Perspective.vue";
 import Slider from "../pages/Slider.vue";
 import Link from "../pages/CanvasLink.vue";
 import Grid from "../pages/GridTest.vue";
+import Galaga from "../pages/Galaga.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -134,6 +136,11 @@ const routes = [
     component: CanvasAudio,
   },
   {
+    path: "/goku",
+    name: "goku",
+    component: CanvasGoku,
+  },
+  {
     path: "/matrix",
     name: "matrix",
     component: CanvasMatrix,
@@ -187,6 +194,11 @@ const routes = [
     path: "/grid",
     name: "grid",
     component: Grid,
+  },
+  {
+    path: "/galaga",
+    name: "galaga",
+    component: Galaga,
   },
   {
     path: "/test",
