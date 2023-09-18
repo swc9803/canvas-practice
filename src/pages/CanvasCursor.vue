@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="container">
     <canvas
       ref="canvasRef"
       @mousemove="onMouseMove"
       @mousedown="onMouseDown"
       @mouseup="onMouseUp"
     />
+    <img ref="imgRef" src="@/assets/star.png" />
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvasRef = ref();
+const imgRef = ref();
 let ctx;
 let effect;
 
@@ -51,24 +53,31 @@ class Particle {
     this.pushX = 0;
     this.pushY = 0;
     this.friction = 0.95;
+    this.image = imgRef.value;
+    this.spriteWidth = 50;
+    this.spriteHeight = 50;
+    this.sizeModifier = Math.random() + 0.2;
+    this.width = this.spriteWidth * this.sizeModifier;
+    this.height = this.spriteHeight * this.sizeModifier;
+    this.halfWidth = this.width * 0.5;
+    this.halfHeight = this.height * 0.5;
+    this.frameX = Math.floor(Math.random() * 3);
+    this.frameY = Math.floor(Math.random() * 3);
   }
   draw(context) {
-    const gradient = context.createLinearGradient(
-      0,
-      0,
-      canvasRef.value.width,
-      canvasRef.value.height
-    );
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(0.5, "gold");
-    gradient.addColorStop(1, "orangered");
-
-    context.fillStyle = gradient;
-    context.fill();
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    context.strokeStyle = "white";
-    context.stroke();
+    context.drawImage(
+      this.image,
+      this.frameX * this.spriteWidth,
+      this.frameY * this.spriteHeight,
+      this.spriteWidth,
+      this.spriteHeight,
+      this.x - this.halfWidth,
+      this.y - this.halfHeight,
+      this.width,
+      this.height
+    );
   }
   update() {
     if (mouse.clicked) {
@@ -114,7 +123,7 @@ class Effect {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.particles = [];
-    this.numberOfParticles = 200;
+    this.numberOfParticles = 150;
     this.createParticles();
   }
   createParticles() {
@@ -151,11 +160,11 @@ class Effect {
   }
 }
 
-function animate() {
+const animate = () => {
   ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
   effect.handleParticles(ctx);
   requestAnimationFrame(animate);
-}
+};
 
 const onResize = () => {
   canvasRef.value.width = window.innerWidth;
@@ -166,8 +175,8 @@ const onResize = () => {
 onMounted(() => {
   ctx = canvasRef.value.getContext("2d");
   onResize();
-
   animate();
+
   window.addEventListener("resize", onResize);
 });
 
@@ -177,10 +186,16 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-canvas {
+.container {
   position: relative;
-  top: 0;
-  left: 0;
-  background: black;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  canvas {
+    position: relative;
+    top: 0;
+    left: 0;
+    background: black;
+  }
 }
 </style>

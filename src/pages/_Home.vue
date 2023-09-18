@@ -40,6 +40,7 @@ const routes = [
   { name: "physic" },
   { name: "star" },
   { name: "galaga" },
+  { name: "cursor" },
   { name: "test" },
 ];
 </script>

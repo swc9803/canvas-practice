@@ -16,6 +16,7 @@ import Collision from "../pages/Collision.vue";
 import DragRotation from "../pages/DragRotation.vue";
 import SpotLight from "../pages/SpotLight.vue";
 import ComparisonImg from "../pages/ComparisonImg.vue";
+import CanvasCursor from "../pages/CanvasCursor.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
 import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
@@ -119,6 +120,11 @@ const routes = [
     path: "/comparison",
     name: "comparison",
     component: ComparisonImg,
+  },
+  {
+    path: "/cursor",
+    name: "cursor",
+    component: CanvasCursor,
   },
   {
     path: "/pattern",
