@@ -38,6 +38,7 @@ const onMouseUp = () => {
   mouse.clicked = false;
 };
 
+<!-- test -->
 class Particle {
   constructor(effect) {
     this.effect = effect;
