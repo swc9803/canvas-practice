@@ -31,6 +31,7 @@ import Textparticle from "../pages/TextParticle.vue";
 import Perspective from "../pages/Perspective.vue";
 import Slider from "../pages/Slider.vue";
 import Link from "../pages/CanvasLink.vue";
+import Liquid from "../pages/CanvasLinkLiquid.vue";
 import Grid from "../pages/GridTest.vue";
 import Galaga from "../pages/Galaga.vue";
 import Test from "../pages/Test.vue";
@@ -195,6 +196,11 @@ const routes = [
     path: "/link",
     name: "link",
     component: Link,
+  },
+  {
+    path: "/liquid",
+    name: "liquid",
+    component: Liquid,
   },
   {
     path: "/grid",

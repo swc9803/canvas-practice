@@ -51,36 +51,24 @@ class Particle {
     this.vy = Math.random() * 1 - 0.5;
     this.pushX = 0;
     this.pushY = 0;
-    this.friction = 0.95;
+    this.friction = 0.8;
   }
   draw(context) {
-    const gradient = context.createLinearGradient(
-      0,
-      0,
-      canvasRef.value.width,
-      canvasRef.value.height
-    );
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(0.5, "gold");
-    gradient.addColorStop(1, "orangered");
-
-    context.fillStyle = gradient;
+    context.fillStyle = "white";
     context.fill();
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    context.strokeStyle = "white";
-    context.stroke();
   }
   update() {
     if (mouse.clicked) {
       const dx = this.x - mouse.x;
       const dy = this.y - mouse.y;
       const distance = Math.hypot(dx, dy);
-      const force = mouse.radius / distance;
+      const force = distance / mouse.radius;
       if (distance < mouse.radius) {
         const angle = Math.atan2(dy, dx);
-        this.pushX += Math.cos(angle) * force;
-        this.pushY += Math.sin(angle) * force;
+        this.pushX -= Math.cos(angle) * force;
+        this.pushY -= Math.sin(angle) * force;
       }
     }
     this.x += (this.pushX *= this.friction) + this.vx;
@@ -124,31 +112,10 @@ class Effect {
     }
   }
   handleParticles(context) {
-    this.connectParticles(context);
     this.particles.forEach((particle) => {
       particle.draw(context);
       particle.update();
     });
-  }
-  connectParticles(context) {
-    const maxDistance = 80;
-    for (let a = 0; a < this.particles.length; a++) {
-      for (let b = a; b < this.particles.length; b++) {
-        const dx = this.particles[a].x - this.particles[b].x;
-        const dy = this.particles[a].y - this.particles[b].y;
-        const distance = Math.hypot(dx, dy);
-        if (distance < maxDistance) {
-          context.save();
-          const opacity = 1 - distance / maxDistance;
-          context.globalAlpha = opacity;
-          context.beginPath();
-          context.moveTo(this.particles[a].x, this.particles[a].y);
-          context.lineTo(this.particles[b].x, this.particles[b].y);
-          context.stroke();
-          context.restore();
-        }
-      }
-    }
   }
 }
 
@@ -188,6 +155,7 @@ onBeforeUnmount(() => {
     top: 0;
     left: 0;
     background: black;
+    filter: blur(7px) contrast(20);
   }
 }
 </style>
