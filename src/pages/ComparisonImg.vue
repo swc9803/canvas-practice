@@ -9,12 +9,12 @@
     ref="containerRef"
     class="container"
   >
-    <div class="before">
+    <div class="beforeWrapper">
       <img
         src="https://farm2.staticflickr.com/1638/26145024230_06acd55d1b_b.jpg"
       />
     </div>
-    <div ref="afterRef" class="after">
+    <div ref="afterWrapperRef" class="afterWrapper">
       <img
         src="https://farm2.staticflickr.com/1663/25814974803_d4c55ff708_b.jpg"
       />
@@ -24,7 +24,6 @@
       @touchstart="onActive = true"
       ref="scrollerRef"
       class="scroller"
-      :class="onActive ? 'scrolling' : ''"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +43,7 @@ import { ref, onMounted } from "vue";
 
 const containerRef = ref();
 const scrollerRef = ref();
-const afterRef = ref();
+const afterWrapperRef = ref();
 
 const onActive = ref(false);
 const afterSize = ref(0);
@@ -52,7 +51,7 @@ const mouseX = ref(0);
 
 const moveScroller = (x) => {
   afterSize.value = Math.max(0, Math.min(x, containerRef.value.offsetWidth));
-  afterRef.value.style.width = `${afterSize.value}px`;
+  afterWrapperRef.value.style.width = `${afterSize.value}px`;
   scrollerRef.value.style.left = `${afterSize.value - 25}px`;
 };
 
@@ -78,71 +77,63 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
   position: absolute;
-  transform: translate3d(-50%, -50%, 0);
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   width: 900px;
   height: 600px;
+  border-radius: 16px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  .before,
-  .after {
-    //img
+  .beforeWrapper,
+  .afterWrapper {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: white;
     overflow: hidden;
     pointer-events: none;
+    user-select: none;
     img {
       height: 100%;
       object-fit: cover;
     }
   }
   .scroller {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid white;
+    border-radius: 50%;
+    background: transparent;
+    opacity: 0.8;
+    pointer-events: auto;
+    cursor: pointer;
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 6px;
+      height: calc(var(--vh) * 100);
+      margin-left: -3.5px;
+      background: white;
+    }
+    &::before {
+      top: 100%;
+    }
+    &::after {
+      bottom: 100%;
+    }
+    &:hover {
+      opacity: 1;
+    }
     svg {
       width: 100%;
       height: 100%;
       padding: 5px;
     }
   }
-}
-
-.scroller {
-  position: absolute;
-  transform: translate3d(0, -50%, 0);
-  top: 50%;
-  width: 50px;
-  height: 50px;
-  background: transparent;
-  border: 5px solid white;
-  border-radius: 50%;
-  opacity: 0.8;
-  cursor: pointer;
-  pointer-events: auto;
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    width: 6px;
-    height: calc(var(--vh) * 100);
-    margin-left: -3.5px;
-    background: white;
-  }
-  &::before {
-    top: 100%;
-  }
-  &::after {
-    bottom: 100%;
-  }
-  &:hover {
-    opacity: 1;
-  }
-}
-
-.scrolling {
-  pointer-events: none;
-  opacity: 1;
 }
 </style>
