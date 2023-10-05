@@ -141,6 +141,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  document.documentElement.style.removeProperty("--color");
   draggableTrigger.forEach((trigger) => trigger.kill());
   window.removeEventListener("resize", onResize);
 });
