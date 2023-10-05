@@ -188,7 +188,8 @@ onBeforeUnmount(() => {
       color: var(--color);
       background: transparent;
       overflow: hidden;
-      transition: border 1s ease, color 1s ease;
+      transition: border 1s cubic-bezier(0.33, 1, 0.68, 1),
+        color 1s cubic-bezier(0.33, 1, 0.68, 1);
       cursor: pointer;
       &:hover {
         box-shadow: 0 0 20px 0 var(--color);
