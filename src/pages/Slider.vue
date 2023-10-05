@@ -1,5 +1,13 @@
 <template>
   <div class="container">
+    <div class="color-wrapper">
+      <div
+        v-for="color in colors"
+        :key="color.id"
+        @click="changeColor(color.color)"
+        :style="{ background: color.color }"
+      />
+    </div>
     <div ref="wrapperRef" class="wrapper">
       <div ref="dragElRef" />
       <div
@@ -27,6 +35,18 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import gsap from "gsap";
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
+
+const colors = [
+  { color: "#ff0000" },
+  { color: "#DE64DE" },
+  { color: "#FFA500" },
+  { color: "#F9FC6F" },
+  { color: "#12dfd4" },
+];
+
+const changeColor = (color) => {
+  document.documentElement.style.setProperty("--color", color);
+};
 
 const cards = [
   {
@@ -115,7 +135,7 @@ const onResize = () => {
 };
 
 onMounted(() => {
-  cardArray.value.reverse();
+  document.documentElement.style.setProperty("--color", "#12dfd4");
   onResize();
   window.addEventListener("resize", onResize);
 });
@@ -134,6 +154,20 @@ onBeforeUnmount(() => {
   height: calc(var(--vh) * 100);
   background: rgb(55, 55, 55);
   overflow: hidden;
+  .color-wrapper {
+    position: relative;
+    top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    div {
+      border: 2px solid white;
+      border-radius: 8px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+    }
+  }
   .wrapper {
     position: absolute;
     top: 50%;
@@ -142,20 +176,22 @@ onBeforeUnmount(() => {
     height: 500px; // 시점
     transform-style: preserve-3d;
     perspective: 1200px;
+    z-index: 1;
     .card {
       position: absolute;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
+      border: 2px solid var(--color);
+      text-align: center;
       width: calc(var(--vh) * 25);
       height: calc(var(--vh) * 60);
-      border: 2px solid #12dfd4;
-      color: #12dfd4;
+      color: var(--color);
       background: transparent;
-      text-align: center;
       overflow: hidden;
+      transition: border 1s ease, color 1s ease;
       cursor: pointer;
       &:hover {
-        box-shadow: 0 0 20px 0 #00fff3;
+        box-shadow: 0 0 20px 0 var(--color);
       }
       h1 {
         font-size: 1.5em;
@@ -185,9 +221,9 @@ onBeforeUnmount(() => {
     bottom: calc(var(--vh) * 2);
     left: 50%;
     transform: translate(-50%, 0);
+    text-align: center;
     font-size: 1.3em;
     color: yellow;
-    text-align: center;
     pointer-events: none;
     @media (width <= 480px) {
       bottom: calc(var(--vh) * 1);
