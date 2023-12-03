@@ -17,10 +17,10 @@ import DragRotation from "../pages/DragRotation.vue";
 import SpotLight from "../pages/SpotLight.vue";
 import ComparisonImg from "../pages/ComparisonImg.vue";
 import CanvasCursor from "../pages/CanvasCursor.vue";
+import CanvasImgCell from "../pages/CanvasImgCell.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
 import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
-import CanvasGoku from "../pages/CanvasGoku.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import CanvasStar from "../pages/CanvasStar.vue";
 import Corner from "../pages/CornerFocus.vue";
@@ -128,6 +128,11 @@ const routes = [
     component: CanvasCursor,
   },
   {
+    path: "/cell",
+    name: "cell",
+    component: CanvasImgCell,
+  },
+  {
     path: "/pattern",
     name: "pattern",
     component: CanvasPattern,
@@ -141,11 +146,6 @@ const routes = [
     path: "/audio",
     name: "audio",
     component: CanvasAudio,
-  },
-  {
-    path: "/goku",
-    name: "goku",
-    component: CanvasGoku,
   },
   {
     path: "/matrix",
