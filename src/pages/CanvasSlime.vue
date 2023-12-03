@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <p>
-      ⚠️Because it uses svg filter, animation breaks can occur on large screens
-    </p>
-    <img />
     <canvas ref="canvasRef" />
     <svg>
       <defs>
@@ -163,21 +159,6 @@ onBeforeUnmount(() => {
   width: 100%;
   height: calc(var(--vh) * 100);
   overflow: hidden;
-  p {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    color: red;
-    font-size: 1.2em;
-  }
-  img {
-    position: absolute;
-    background: url("~@/assets/tang.webp") no-repeat center/cover;
-    bottom: -1px;
-    width: 100%;
-    height: 20%;
-  }
   canvas {
     position: relative;
     opacity: 0.7;

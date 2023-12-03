@@ -4,16 +4,12 @@ import Tree from "../pages/Tree.vue";
 import GetImgColor from "../pages/GetImgColor.vue";
 import Input from "../pages/Input.vue";
 import RainDrawImg from "../pages/RainDrawImg.vue";
-import Pinning from "../pages/Pinning.vue";
 import CanvasParticleText from "../pages/CanvasParticleText.vue";
 import CanvasPhysicParticle from "../pages/CanvasPhysicParticle.vue";
 import CanvasSlime from "../pages/CanvasSlime.vue";
-import ScrollSkew from "../pages/ScrollSkew.vue";
-import Glitch from "../pages/Glitch.vue";
 import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
 import Collision from "../pages/Collision.vue";
-import DragRotation from "../pages/DragRotation.vue";
 import CanvasCursor from "../pages/CanvasCursor.vue";
 import CanvasImgCell from "../pages/CanvasImgCell.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
@@ -21,16 +17,12 @@ import CanvasTrackEyes from "../pages/CanvasTrackEyes.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import CanvasStar from "../pages/CanvasStar.vue";
-import Corner from "../pages/CornerFocus.vue";
-import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
 import Textparticle from "../pages/TextParticle.vue";
-import Perspective from "../pages/Perspective.vue";
-import Slider from "../pages/Slider.vue";
 import Link from "../pages/CanvasLink.vue";
 import Liquid from "../pages/CanvasLinkLiquid.vue";
-import Grid from "../pages/GridTest.vue";
 import Galaga from "../pages/Galaga.vue";
+import IntroBlur from "../pages/IntroBlur.vue";
 import Test from "../pages/Test.vue";
 
 const routes = [
@@ -55,11 +47,6 @@ const routes = [
     component: Input,
   },
   {
-    path: "/pinning",
-    name: "pinning",
-    component: Pinning,
-  },
-  {
     path: "/raindraw",
     name: "raindraw",
     component: RainDrawImg,
@@ -80,16 +67,6 @@ const routes = [
     component: CanvasSlime,
   },
   {
-    path: "/scrollskew",
-    name: "scrollskew",
-    component: ScrollSkew,
-  },
-  {
-    path: "/glitch",
-    name: "glitch",
-    component: Glitch,
-  },
-  {
     path: "/svgwave",
     name: "svgwave",
     component: SvgWave,
@@ -103,11 +80,6 @@ const routes = [
     path: "/collision",
     name: "collision",
     component: Collision,
-  },
-  {
-    path: "/dragrotation",
-    name: "dragrotation",
-    component: DragRotation,
   },
   {
     path: "/cursor",
@@ -145,16 +117,6 @@ const routes = [
     component: CanvasStar,
   },
   {
-    path: "/corner",
-    name: "corner",
-    component: Corner,
-  },
-  {
-    path: "/doll",
-    name: "doll",
-    component: Doll,
-  },
-  {
     path: "/scrollplay",
     name: "scrollplay",
     component: ScrollPlay,
@@ -163,16 +125,6 @@ const routes = [
     path: "/textparticle",
     name: "textparticle",
     component: Textparticle,
-  },
-  {
-    path: "/perspective",
-    name: "perspective",
-    component: Perspective,
-  },
-  {
-    path: "/slider",
-    name: "slider",
-    component: Slider,
   },
   {
     path: "/link",
@@ -185,14 +137,14 @@ const routes = [
     component: Liquid,
   },
   {
-    path: "/grid",
-    name: "grid",
-    component: Grid,
-  },
-  {
     path: "/galaga",
     name: "galaga",
     component: Galaga,
+  },
+  {
+    path: "/intro",
+    name: "intro",
+    component: IntroBlur,
   },
   {
     path: "/test",
