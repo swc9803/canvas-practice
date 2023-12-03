@@ -14,8 +14,6 @@ import SvgWave from "../pages/SvgWave.vue";
 import MovingStar from "../pages/MovingStar.vue";
 import Collision from "../pages/Collision.vue";
 import DragRotation from "../pages/DragRotation.vue";
-import SpotLight from "../pages/SpotLight.vue";
-import ComparisonImg from "../pages/ComparisonImg.vue";
 import CanvasCursor from "../pages/CanvasCursor.vue";
 import CanvasImgCell from "../pages/CanvasImgCell.vue";
 import CanvasPattern from "../pages/CanvasPattern.vue";
@@ -24,7 +22,6 @@ import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
 import CanvasStar from "../pages/CanvasStar.vue";
 import Corner from "../pages/CornerFocus.vue";
-import Spotlight from "../pages/SpotLight.vue";
 import Doll from "../pages/WindUpDoll.vue";
 import ScrollPlay from "../pages/ScrollPlay.vue";
 import Textparticle from "../pages/TextParticle.vue";
@@ -113,16 +110,6 @@ const routes = [
     component: DragRotation,
   },
   {
-    path: "/spotlight",
-    name: "spotlight",
-    component: SpotLight,
-  },
-  {
-    path: "/comparison",
-    name: "comparison",
-    component: ComparisonImg,
-  },
-  {
     path: "/cursor",
     name: "cursor",
     component: CanvasCursor,
@@ -161,11 +148,6 @@ const routes = [
     path: "/corner",
     name: "corner",
     component: Corner,
-  },
-  {
-    path: "/spotlight",
-    name: "spotlight",
-    component: Spotlight,
   },
   {
     path: "/doll",
