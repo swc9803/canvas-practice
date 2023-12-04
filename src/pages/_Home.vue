@@ -11,17 +11,28 @@
 
 <script setup>
 const routes = [
-  { name: "movingstar" },
-  { name: "trackeyes" },
   { name: "audio" },
-  { name: "matrix" },
-  { name: "scrollplay" },
+  { name: "cursor" },
+  { name: "cell" },
   { name: "link" },
   { name: "liquid" },
+  { name: "particletext" },
+  { name: "pattern" },
   { name: "physic" },
+  { name: "slime" },
   { name: "star" },
+  { name: "trackeyes" },
+  { name: "collision" },
   { name: "galaga" },
-  { name: "cursor" },
+  { name: "imgcolor" },
+  { name: "input" },
+  { name: "intro" },
+  { name: "movingstar" },
+  { name: "raindraw" },
+  { name: "scrollplay" },
+  { name: "svgwave" },
+  { name: "textparticle" },
+  { name: "tree" },
   { name: "test" },
 ];
 </script>
