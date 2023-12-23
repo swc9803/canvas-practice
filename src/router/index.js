@@ -3,6 +3,7 @@ import Home from "../pages/_Home.vue";
 import CanvasAudio from "../pages/CanvasAudio.vue";
 import CanvasCursor from "../pages/CanvasCursor.vue";
 import CanvasImgCell from "../pages/CanvasImgCell.vue";
+import CanvasImgCell2 from "../pages/CanvasImgCell2.vue";
 import CanvasLink from "../pages/CanvasLink.vue";
 import CanvasLiquid from "../pages/CanvasLinkLiquid.vue";
 import CanvasMatrix from "../pages/CanvasMatrix.vue";
@@ -46,6 +47,11 @@ const routes = [
     path: "/cell",
     name: "cell",
     component: CanvasImgCell,
+  },
+  {
+    path: "/cell2",
+    name: "cell2",
+    component: CanvasImgCell2,
   },
   {
     path: "/link",
